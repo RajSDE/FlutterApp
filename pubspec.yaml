@@ -9,17 +9,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   equatable: ^2.0.5
   flutter_bloc: ^8.1.6
   flutter_secure_storage: ^9.2.2
   get_it: ^7.7.0
+  google_fonts: ^6.2.1
+  intl: ^0.20.2
 
 dev_dependencies:
+  bloc_test: ^9.1.7
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_lints: ^5.0.0
+  mocktail: ^1.0.4
 
 flutter:
   uses-material-design: true
+  generate: true

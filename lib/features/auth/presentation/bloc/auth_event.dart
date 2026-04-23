@@ -9,13 +9,35 @@ abstract class AuthEvent extends Equatable {
 
 class LoginRequested extends AuthEvent {
   const LoginRequested({
+    required this.phoneNumber,
+  });
+
+  final String phoneNumber;
+
+  @override
+  List<Object?> get props => <Object?>[phoneNumber];
+}
+
+class OtpVerificationRequested extends AuthEvent {
+  const OtpVerificationRequested({
+    required this.phoneNumber,
+    required this.otp,
+  });
+
+  final String phoneNumber;
+  final String otp;
+
+  @override
+  List<Object?> get props => <Object?>[phoneNumber, otp];
+}
+
+class SignupRequested extends AuthEvent {
+  const SignupRequested({
     required this.email,
-    required this.password,
   });
 
   final String email;
-  final String password;
 
   @override
-  List<Object?> get props => <Object?>[email, password];
+  List<Object?> get props => <Object?>[email];
 }

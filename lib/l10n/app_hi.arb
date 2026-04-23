@@ -1,0 +1,44 @@
+{
+  "@@locale": "hi",
+  "appName": "ऐप नाम",
+  "loginTitle": "अपने अकाउंट में लॉगिन करें",
+  "loginSubtitle": "वन-टाइम पासवर्ड पाने के लिए अपना मोबाइल नंबर दर्ज करें",
+  "otpTitle": "वेरिफिकेशन कोड दर्ज करें",
+  "otpSubtitle": "हमने आपके मोबाइल नंबर पर 6 अंकों का ओटीपी भेजा है",
+  "mobileNumberHint": "मोबाइल नंबर दर्ज करें",
+  "otpHint": "6 अंकों का ओटीपी दर्ज करें",
+  "continueText": "जारी रखें",
+  "verifyOtp": "ओटीपी सत्यापित करें",
+  "resendOtp": "ओटीपी फिर भेजें",
+  "orText": "या",
+  "continueWithGoogle": "Google के साथ जारी रखें",
+  "continueWithApple": "Apple के साथ जारी रखें",
+  "signupPrompt": "क्या आपका अकाउंट नहीं है? साइन अप करें",
+  "loginPrompt": "क्या आपका अकाउंट है? लॉगिन करें",
+  "signupTitle": "अकाउंट बनाएं",
+  "signupSubtitle": "इस ऐप के लिए साइन अप करने हेतु अपना ईमेल दर्ज करें",
+  "emailHint": "email@domain.com",
+  "termsPrefix": "जारी रखने पर आप हमारी ",
+  "termsOfService": "सेवा की शर्तों",
+  "andText": " और ",
+  "privacyPolicy": "गोपनीयता नीति",
+  "homeWelcome": "स्वागत है! आप लॉगिन हो चुके हैं।",
+  "pageNotFound": "पेज नहीं मिला",
+  "languageEnglish": "English",
+  "languageHindi": "हिंदी",
+  "errorInvalidEmail": "कृपया सही ईमेल पता दर्ज करें।",
+  "errorInvalidMobile": "कृपया सही मोबाइल नंबर दर्ज करें।",
+  "errorInvalidOtpRequest": "ओटीपी सत्यापन अनुरोध अमान्य है।",
+  "errorRequestOtpFailed": "अभी ओटीपी अनुरोध नहीं किया जा सका।",
+  "errorVerifyOtpFailed": "अभी ओटीपी सत्यापित नहीं किया जा सका।",
+  "errorSignupFailed": "अभी साइन अप पूरा नहीं हो सका।",
+  "otpSentMessage": "+91 {phone} पर ओटीपी भेज दिया गया है",
+  "@otpSentMessage": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "otpResent": "ओटीपी फिर भेज दिया गया है"
+}

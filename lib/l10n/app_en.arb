@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+  "appName": "App name",
+  "loginTitle": "Login to your account",
+  "loginSubtitle": "Enter your mobile number to receive a one-time password",
+  "otpTitle": "Enter verification code",
+  "otpSubtitle": "We sent a 6-digit OTP to your mobile number",
+  "mobileNumberHint": "Enter mobile number",
+  "otpHint": "Enter 6-digit OTP",
+  "continueText": "Continue",
+  "verifyOtp": "Verify OTP",
+  "resendOtp": "Resend OTP",
+  "orText": "or",
+  "continueWithGoogle": "Continue with Google",
+  "continueWithApple": "Continue with Apple",
+  "signupPrompt": "Don't have an account? Sign up",
+  "loginPrompt": "Already have an account? Login",
+  "signupTitle": "Create an account",
+  "signupSubtitle": "Enter your email to sign up for this app",
+  "emailHint": "email@domain.com",
+  "termsPrefix": "By clicking continue, you agree to our ",
+  "termsOfService": "Terms of Service",
+  "andText": " and ",
+  "privacyPolicy": "Privacy Policy",
+  "homeWelcome": "Welcome! You are logged in.",
+  "pageNotFound": "Page not found",
+  "languageEnglish": "English",
+  "languageHindi": "Hindi",
+  "errorInvalidEmail": "Please provide a valid email address.",
+  "errorInvalidMobile": "Enter a valid mobile number.",
+  "errorInvalidOtpRequest": "Invalid OTP verification request.",
+  "errorRequestOtpFailed": "Unable to request OTP right now.",
+  "errorVerifyOtpFailed": "Unable to verify OTP right now.",
+  "errorSignupFailed": "Unable to complete signup right now.",
+  "otpSentMessage": "OTP sent to +91 {phone}",
+  "@otpSentMessage": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "otpResent": "OTP resent successfully"
+}

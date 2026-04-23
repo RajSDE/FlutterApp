@@ -13,7 +13,23 @@ class AuthInitial extends AuthState {
 }
 
 class AuthLoading extends AuthState {
-  const AuthLoading();
+  const AuthLoading({
+    this.isOtpStep = false,
+  });
+
+  final bool isOtpStep;
+
+  @override
+  List<Object?> get props => <Object?>[isOtpStep];
+}
+
+class OtpSent extends AuthState {
+  const OtpSent(this.phoneNumber);
+
+  final String phoneNumber;
+
+  @override
+  List<Object?> get props => <Object?>[phoneNumber];
 }
 
 class AuthAuthenticated extends AuthState {
@@ -26,10 +42,14 @@ class AuthAuthenticated extends AuthState {
 }
 
 class AuthFailure extends AuthState {
-  const AuthFailure(this.message);
+  const AuthFailure(
+    this.message, {
+    this.isOtpStep = false,
+  });
 
   final String message;
+  final bool isOtpStep;
 
   @override
-  List<Object?> get props => <Object?>[message];
+  List<Object?> get props => <Object?>[message, isOtpStep];
 }
