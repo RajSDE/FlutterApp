@@ -18,6 +18,10 @@ extension LocalizationExtension on BuildContext {
         return l10n.errorVerifyOtpFailed;
       case 'errorSignupFailed':
         return l10n.errorSignupFailed;
+      case 'errorInvalidDummyId':
+        return l10n.errorInvalidDummyId;
+      case 'errorDummyLoginFailed':
+        return l10n.errorDummyLoginFailed;
       default:
         return key;
     }

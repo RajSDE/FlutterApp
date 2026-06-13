@@ -20,13 +20,25 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
+  final TextEditingController _dummyUserController = TextEditingController(
+    text: 'demo-user-001',
+  );
   bool _isOtpStep = false;
 
   @override
   void dispose() {
     _phoneController.dispose();
     _otpController.dispose();
+    _dummyUserController.dispose();
     super.dispose();
+  }
+
+  void _handleDummyLogin() {
+    context.read<AuthBloc>().add(
+          DummyLoginRequested(
+            dummyUserId: _dummyUserController.text.trim(),
+          ),
+        );
   }
 
   void _handleContinue() {
@@ -127,6 +139,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 },
               ),
+              if (!_isOtpStep) ...<Widget>[
+                const SizedBox(height: AppSpacing.section),
+                AuthSectionHeader(
+                  title: l10n.dummyLoginTitle,
+                  subtitle: l10n.dummyLoginSubtitle,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                TextField(
+                  controller: _dummyUserController,
+                  decoration: authInputDecoration(
+                    hintText: l10n.dummyUserIdHint,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    return PrimaryButton(
+                      label: l10n.loginWithDummyId,
+                      isLoading: state is AuthLoading,
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.buttonOnPrimary,
+                      onPressed: _handleDummyLogin,
+                    );
+                  },
+                ),
+              ],
               const SizedBox(height: AppSpacing.md),
               if (_isOtpStep)
                 TextButton(

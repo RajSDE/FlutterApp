@@ -19,6 +19,19 @@ class AppLocalizationsHi extends AppLocalizations {
       'वन-टाइम पासवर्ड पाने के लिए अपना मोबाइल नंबर दर्ज करें';
 
   @override
+  String get dummyLoginTitle => 'डेवलपमेंट लॉगिन';
+
+  @override
+  String get dummyLoginSubtitle =>
+      'बैकएंड API तैयार होने तक डमी यूज़र ID इस्तेमाल करें';
+
+  @override
+  String get dummyUserIdHint => 'डमी यूज़र ID';
+
+  @override
+  String get loginWithDummyId => 'डमी ID से लॉगिन करें';
+
+  @override
   String get otpTitle => 'वेरिफिकेशन कोड दर्ज करें';
 
   @override
@@ -107,10 +120,98 @@ class AppLocalizationsHi extends AppLocalizations {
   String get errorSignupFailed => 'अभी साइन अप पूरा नहीं हो सका।';
 
   @override
+  String get errorInvalidDummyId => 'कृपया सही डमी यूज़र ID दर्ज करें।';
+
+  @override
+  String get errorDummyLoginFailed => 'अभी डमी ID से लॉगिन नहीं किया जा सका।';
+
+  @override
   String otpSentMessage(String phone) {
     return '+91 $phone पर ओटीपी भेज दिया गया है';
   }
 
   @override
   String get otpResent => 'ओटीपी फिर भेज दिया गया है';
+
+  @override
+  String get homeDeliveryTime => '10 मिनट डिलीवरी';
+
+  @override
+  String get homeLocationTitle => 'डिलीवरी यहां';
+
+  @override
+  String get homeLocationValue => 'घर, सेक्टर 21';
+
+  @override
+  String get homeSearchHint => 'दूध, फल, स्नैक्स खोजें';
+
+  @override
+  String get homeHeroTitle => 'ताज़ा सामान आपके दरवाज़े पर';
+
+  @override
+  String get homeHeroSubtitle =>
+      'रोज़मर्रा की ज़रूरतें, स्नैक्स और तुरंत cravings तेज़ डिलीवरी के साथ।';
+
+  @override
+  String get homeCategoriesTitle => 'कैटेगरी से खरीदें';
+
+  @override
+  String get homeDealsTitle => 'आज की तेज़ डील्स';
+
+  @override
+  String get homeEssentialsTitle => 'डेली एसेंशियल्स';
+
+  @override
+  String get homeSeeAll => 'सभी देखें';
+
+  @override
+  String get homeCart => 'कार्ट';
+
+  @override
+  String get categoryFruits => 'फल';
+
+  @override
+  String get categoryDairy => 'डेयरी';
+
+  @override
+  String get categorySnacks => 'स्नैक्स';
+
+  @override
+  String get categoryBakery => 'बेकरी';
+
+  @override
+  String get categoryDrinks => 'ड्रिंक्स';
+
+  @override
+  String get categoryPersonalCare => 'केयर';
+
+  @override
+  String get dealMorningSaver => 'मॉर्निंग सेवर';
+
+  @override
+  String get dealMorningSaverSubtitle => 'ब्रेकफास्ट बेसिक्स पर 30% तक छूट';
+
+  @override
+  String get dealSnackRush => 'स्नैक रश';
+
+  @override
+  String get dealSnackRushSubtitle => 'चिप्स, डिप्स और ठंडी ड्रिंक्स';
+
+  @override
+  String get productBanana => 'ताज़ा केला';
+
+  @override
+  String get productMilk => 'टोन्ड दूध';
+
+  @override
+  String get productBread => 'होल व्हीट ब्रेड';
+
+  @override
+  String get productEggs => 'फार्म अंडे';
+
+  @override
+  String get productPotatoChips => 'पोटैटो चिप्स';
+
+  @override
+  String get productAdd => 'जोड़ें';
 }

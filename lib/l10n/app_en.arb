@@ -3,6 +3,10 @@
   "appName": "App name",
   "loginTitle": "Login to your account",
   "loginSubtitle": "Enter your mobile number to receive a one-time password",
+  "dummyLoginTitle": "Development login",
+  "dummyLoginSubtitle": "Use a dummy user ID while backend APIs are being prepared",
+  "dummyUserIdHint": "Dummy user ID",
+  "loginWithDummyId": "Login with Dummy ID",
   "otpTitle": "Enter verification code",
   "otpSubtitle": "We sent a 6-digit OTP to your mobile number",
   "mobileNumberHint": "Enter mobile number",
@@ -32,6 +36,8 @@
   "errorRequestOtpFailed": "Unable to request OTP right now.",
   "errorVerifyOtpFailed": "Unable to verify OTP right now.",
   "errorSignupFailed": "Unable to complete signup right now.",
+  "errorInvalidDummyId": "Enter a valid dummy user ID.",
+  "errorDummyLoginFailed": "Unable to login with dummy ID right now.",
   "otpSentMessage": "OTP sent to +91 {phone}",
   "@otpSentMessage": {
     "placeholders": {
@@ -40,5 +46,32 @@
       }
     }
   },
-  "otpResent": "OTP resent successfully"
+  "otpResent": "OTP resent successfully",
+  "homeDeliveryTime": "10 min delivery",
+  "homeLocationTitle": "Delivering to",
+  "homeLocationValue": "Home, Sector 21",
+  "homeSearchHint": "Search milk, fruits, snacks",
+  "homeHeroTitle": "Fresh picks at your door",
+  "homeHeroSubtitle": "Daily essentials, snacks, and instant cravings delivered fast.",
+  "homeCategoriesTitle": "Shop by category",
+  "homeDealsTitle": "Today’s quick deals",
+  "homeEssentialsTitle": "Daily essentials",
+  "homeSeeAll": "See all",
+  "homeCart": "Cart",
+  "categoryFruits": "Fruits",
+  "categoryDairy": "Dairy",
+  "categorySnacks": "Snacks",
+  "categoryBakery": "Bakery",
+  "categoryDrinks": "Drinks",
+  "categoryPersonalCare": "Care",
+  "dealMorningSaver": "Morning saver",
+  "dealMorningSaverSubtitle": "Up to 30% off breakfast basics",
+  "dealSnackRush": "Snack rush",
+  "dealSnackRushSubtitle": "Chips, dips, and cold drinks",
+  "productBanana": "Fresh Banana",
+  "productMilk": "Toned Milk",
+  "productBread": "Whole Wheat Bread",
+  "productEggs": "Farm Eggs",
+  "productPotatoChips": "Potato Chips",
+  "productAdd": "Add"
 }

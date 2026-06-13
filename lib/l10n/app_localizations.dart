@@ -116,6 +116,30 @@ abstract class AppLocalizations {
   /// **'Enter your mobile number to receive a one-time password'**
   String get loginSubtitle;
 
+  /// No description provided for @dummyLoginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Development login'**
+  String get dummyLoginTitle;
+
+  /// No description provided for @dummyLoginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a dummy user ID while backend APIs are being prepared'**
+  String get dummyLoginSubtitle;
+
+  /// No description provided for @dummyUserIdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Dummy user ID'**
+  String get dummyUserIdHint;
+
+  /// No description provided for @loginWithDummyId.
+  ///
+  /// In en, this message translates to:
+  /// **'Login with Dummy ID'**
+  String get loginWithDummyId;
+
   /// No description provided for @otpTitle.
   ///
   /// In en, this message translates to:
@@ -290,6 +314,18 @@ abstract class AppLocalizations {
   /// **'Unable to complete signup right now.'**
   String get errorSignupFailed;
 
+  /// No description provided for @errorInvalidDummyId.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid dummy user ID.'**
+  String get errorInvalidDummyId;
+
+  /// No description provided for @errorDummyLoginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to login with dummy ID right now.'**
+  String get errorDummyLoginFailed;
+
   /// No description provided for @otpSentMessage.
   ///
   /// In en, this message translates to:
@@ -301,6 +337,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OTP resent successfully'**
   String get otpResent;
+
+  /// No description provided for @homeDeliveryTime.
+  ///
+  /// In en, this message translates to:
+  /// **'10 min delivery'**
+  String get homeDeliveryTime;
+
+  /// No description provided for @homeLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivering to'**
+  String get homeLocationTitle;
+
+  /// No description provided for @homeLocationValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Home, Sector 21'**
+  String get homeLocationValue;
+
+  /// No description provided for @homeSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search milk, fruits, snacks'**
+  String get homeSearchHint;
+
+  /// No description provided for @homeHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh picks at your door'**
+  String get homeHeroTitle;
+
+  /// No description provided for @homeHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily essentials, snacks, and instant cravings delivered fast.'**
+  String get homeHeroSubtitle;
+
+  /// No description provided for @homeCategoriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop by category'**
+  String get homeCategoriesTitle;
+
+  /// No description provided for @homeDealsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today’s quick deals'**
+  String get homeDealsTitle;
+
+  /// No description provided for @homeEssentialsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily essentials'**
+  String get homeEssentialsTitle;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get homeSeeAll;
+
+  /// No description provided for @homeCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart'**
+  String get homeCart;
+
+  /// No description provided for @categoryFruits.
+  ///
+  /// In en, this message translates to:
+  /// **'Fruits'**
+  String get categoryFruits;
+
+  /// No description provided for @categoryDairy.
+  ///
+  /// In en, this message translates to:
+  /// **'Dairy'**
+  String get categoryDairy;
+
+  /// No description provided for @categorySnacks.
+  ///
+  /// In en, this message translates to:
+  /// **'Snacks'**
+  String get categorySnacks;
+
+  /// No description provided for @categoryBakery.
+  ///
+  /// In en, this message translates to:
+  /// **'Bakery'**
+  String get categoryBakery;
+
+  /// No description provided for @categoryDrinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Drinks'**
+  String get categoryDrinks;
+
+  /// No description provided for @categoryPersonalCare.
+  ///
+  /// In en, this message translates to:
+  /// **'Care'**
+  String get categoryPersonalCare;
+
+  /// No description provided for @dealMorningSaver.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning saver'**
+  String get dealMorningSaver;
+
+  /// No description provided for @dealMorningSaverSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 30% off breakfast basics'**
+  String get dealMorningSaverSubtitle;
+
+  /// No description provided for @dealSnackRush.
+  ///
+  /// In en, this message translates to:
+  /// **'Snack rush'**
+  String get dealSnackRush;
+
+  /// No description provided for @dealSnackRushSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chips, dips, and cold drinks'**
+  String get dealSnackRushSubtitle;
+
+  /// No description provided for @productBanana.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh Banana'**
+  String get productBanana;
+
+  /// No description provided for @productMilk.
+  ///
+  /// In en, this message translates to:
+  /// **'Toned Milk'**
+  String get productMilk;
+
+  /// No description provided for @productBread.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole Wheat Bread'**
+  String get productBread;
+
+  /// No description provided for @productEggs.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Eggs'**
+  String get productEggs;
+
+  /// No description provided for @productPotatoChips.
+  ///
+  /// In en, this message translates to:
+  /// **'Potato Chips'**
+  String get productPotatoChips;
+
+  /// No description provided for @productAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get productAdd;
 }
 
 class _AppLocalizationsDelegate

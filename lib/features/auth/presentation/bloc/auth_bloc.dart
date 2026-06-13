@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
 import 'package:flutter_app/features/auth/domain/usecases/signup_with_email.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
@@ -7,21 +8,40 @@ import 'package:flutter_app/features/auth/presentation/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({
+    required LoginWithDummyId loginWithDummyId,
     required RequestLoginOtp requestLoginOtp,
     required VerifyLoginOtp verifyLoginOtp,
     required SignupWithEmail signupWithEmail,
-  })  : _requestLoginOtp = requestLoginOtp,
+  })  : _loginWithDummyId = loginWithDummyId,
+        _requestLoginOtp = requestLoginOtp,
         _verifyLoginOtp = verifyLoginOtp,
         _signupWithEmail = signupWithEmail,
         super(const AuthInitial()) {
+    on<DummyLoginRequested>(_onDummyLoginRequested);
     on<LoginRequested>(_onLoginRequested);
     on<OtpVerificationRequested>(_onOtpVerificationRequested);
     on<SignupRequested>(_onSignupRequested);
   }
 
+  final LoginWithDummyId _loginWithDummyId;
   final RequestLoginOtp _requestLoginOtp;
   final VerifyLoginOtp _verifyLoginOtp;
   final SignupWithEmail _signupWithEmail;
+
+  Future<void> _onDummyLoginRequested(
+    DummyLoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+
+    final result = await _loginWithDummyId(dummyUserId: event.dummyUserId);
+    emit(
+      result.when(
+        success: AuthAuthenticated.new,
+        failure: AuthFailure.new,
+      ),
+    );
+  }
 
   Future<void> _onLoginRequested(
     LoginRequested event,

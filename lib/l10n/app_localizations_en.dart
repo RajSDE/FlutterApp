@@ -19,6 +19,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enter your mobile number to receive a one-time password';
 
   @override
+  String get dummyLoginTitle => 'Development login';
+
+  @override
+  String get dummyLoginSubtitle =>
+      'Use a dummy user ID while backend APIs are being prepared';
+
+  @override
+  String get dummyUserIdHint => 'Dummy user ID';
+
+  @override
+  String get loginWithDummyId => 'Login with Dummy ID';
+
+  @override
   String get otpTitle => 'Enter verification code';
 
   @override
@@ -106,10 +119,99 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorSignupFailed => 'Unable to complete signup right now.';
 
   @override
+  String get errorInvalidDummyId => 'Enter a valid dummy user ID.';
+
+  @override
+  String get errorDummyLoginFailed =>
+      'Unable to login with dummy ID right now.';
+
+  @override
   String otpSentMessage(String phone) {
     return 'OTP sent to +91 $phone';
   }
 
   @override
   String get otpResent => 'OTP resent successfully';
+
+  @override
+  String get homeDeliveryTime => '10 min delivery';
+
+  @override
+  String get homeLocationTitle => 'Delivering to';
+
+  @override
+  String get homeLocationValue => 'Home, Sector 21';
+
+  @override
+  String get homeSearchHint => 'Search milk, fruits, snacks';
+
+  @override
+  String get homeHeroTitle => 'Fresh picks at your door';
+
+  @override
+  String get homeHeroSubtitle =>
+      'Daily essentials, snacks, and instant cravings delivered fast.';
+
+  @override
+  String get homeCategoriesTitle => 'Shop by category';
+
+  @override
+  String get homeDealsTitle => 'Today’s quick deals';
+
+  @override
+  String get homeEssentialsTitle => 'Daily essentials';
+
+  @override
+  String get homeSeeAll => 'See all';
+
+  @override
+  String get homeCart => 'Cart';
+
+  @override
+  String get categoryFruits => 'Fruits';
+
+  @override
+  String get categoryDairy => 'Dairy';
+
+  @override
+  String get categorySnacks => 'Snacks';
+
+  @override
+  String get categoryBakery => 'Bakery';
+
+  @override
+  String get categoryDrinks => 'Drinks';
+
+  @override
+  String get categoryPersonalCare => 'Care';
+
+  @override
+  String get dealMorningSaver => 'Morning saver';
+
+  @override
+  String get dealMorningSaverSubtitle => 'Up to 30% off breakfast basics';
+
+  @override
+  String get dealSnackRush => 'Snack rush';
+
+  @override
+  String get dealSnackRushSubtitle => 'Chips, dips, and cold drinks';
+
+  @override
+  String get productBanana => 'Fresh Banana';
+
+  @override
+  String get productMilk => 'Toned Milk';
+
+  @override
+  String get productBread => 'Whole Wheat Bread';
+
+  @override
+  String get productEggs => 'Farm Eggs';
+
+  @override
+  String get productPotatoChips => 'Potato Chips';
+
+  @override
+  String get productAdd => 'Add';
 }

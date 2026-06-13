@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_app/core/result/result.dart';
 import 'package:flutter_app/features/auth/domain/entities/user.dart';
+import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
 import 'package:flutter_app/features/auth/domain/usecases/signup_with_email.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class _MockRequestLoginOtp extends Mock implements RequestLoginOtp {}
+
+class _MockLoginWithDummyId extends Mock implements LoginWithDummyId {}
 
 class _MockVerifyLoginOtp extends Mock implements VerifyLoginOtp {}
 
@@ -26,10 +29,12 @@ void main() {
   );
 
   late RequestLoginOtp requestLoginOtp;
+  late LoginWithDummyId loginWithDummyId;
   late VerifyLoginOtp verifyLoginOtp;
   late SignupWithEmail signupWithEmail;
 
   setUp(() {
+    loginWithDummyId = _MockLoginWithDummyId();
     requestLoginOtp = _MockRequestLoginOtp();
     verifyLoginOtp = _MockVerifyLoginOtp();
     signupWithEmail = _MockSignupWithEmail();
@@ -37,11 +42,29 @@ void main() {
 
   AuthBloc buildBloc() {
     return AuthBloc(
+      loginWithDummyId: loginWithDummyId,
       requestLoginOtp: requestLoginOtp,
       verifyLoginOtp: verifyLoginOtp,
       signupWithEmail: signupWithEmail,
     );
   }
+
+  blocTest<AuthBloc, AuthState>(
+    'emits loading then authenticated when dummy login succeeds',
+    build: () {
+      when(
+        () => loginWithDummyId(dummyUserId: 'demo-user-001'),
+      ).thenAnswer((_) async => const Success<User>(user));
+      return buildBloc();
+    },
+    act: (bloc) => bloc.add(
+      const DummyLoginRequested(dummyUserId: 'demo-user-001'),
+    ),
+    expect: () => <AuthState>[
+      const AuthLoading(),
+      const AuthAuthenticated(user),
+    ],
+  );
 
   blocTest<AuthBloc, AuthState>(
     'emits loading then otp sent when login OTP request succeeds',

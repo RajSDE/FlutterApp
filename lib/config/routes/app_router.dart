@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/core/extensions/localization_extension.dart';
 import 'package:flutter_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter_app/features/auth/presentation/screens/signup_screen.dart';
-import 'package:flutter_app/shared/theme/app_colors.dart';
+import 'package:flutter_app/features/home/presentation/screens/home_screen.dart';
 
 class AppRouter {
   static const String login = '/';
@@ -23,7 +23,7 @@ class AppRouter {
         );
       case home:
         return MaterialPageRoute<void>(
-          builder: (_) => const _HomeScreen(),
+          builder: (_) => const HomeScreen(),
           settings: settings,
         );
       default:
@@ -34,42 +34,5 @@ class AppRouter {
           settings: settings,
         );
     }
-  }
-}
-
-class _HomeScreen extends StatelessWidget {
-  const _HomeScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: <Color>[
-              Color(0xFFFFE0CF),
-              AppColors.scaffold,
-            ],
-          ),
-        ),
-        child: const Center(
-          child: _HomeTitle(),
-        ),
-      ),
-    );
-  }
-}
-
-class _HomeTitle extends StatelessWidget {
-  const _HomeTitle();
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      context.l10n.homeWelcome,
-      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-    );
   }
 }

@@ -7,6 +7,17 @@ abstract class AuthEvent extends Equatable {
   List<Object?> get props => <Object?>[];
 }
 
+class DummyLoginRequested extends AuthEvent {
+  const DummyLoginRequested({
+    required this.dummyUserId,
+  });
+
+  final String dummyUserId;
+
+  @override
+  List<Object?> get props => <Object?>[dummyUserId];
+}
+
 class LoginRequested extends AuthEvent {
   const LoginRequested({
     required this.phoneNumber,

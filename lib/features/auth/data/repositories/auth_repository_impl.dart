@@ -17,6 +17,22 @@ class AuthRepositoryImpl implements AuthRepository {
   final SecureStorageService _secureStorageService;
 
   @override
+  Future<Result<User>> loginWithDummyId({
+    required String dummyUserId,
+  }) async {
+    try {
+      final user =
+          await _remoteDataSource.loginWithDummyId(dummyUserId: dummyUserId);
+      await _persistSession(user);
+      return Success<User>(user);
+    } on AppException catch (exception) {
+      return Error<User>(exception.message);
+    } catch (_) {
+      return const Error<User>('errorDummyLoginFailed');
+    }
+  }
+
+  @override
   Future<Result<Unit>> requestLoginOtp({
     required String phoneNumber,
   }) async {
@@ -36,14 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }) async {
     try {
       final user = await _remoteDataSource.signupWithEmail(email: email);
-      await _secureStorageService.write(
-        key: StorageKeys.authToken,
-        value: user.token,
-      );
-      await _secureStorageService.write(
-        key: StorageKeys.refreshToken,
-        value: user.refreshToken,
-      );
+      await _persistSession(user);
       return Success<User>(user);
     } on AppException catch (exception) {
       return Error<User>(exception.message);
@@ -62,19 +71,23 @@ class AuthRepositoryImpl implements AuthRepository {
         phoneNumber: phoneNumber,
         otp: otp,
       );
-      await _secureStorageService.write(
-        key: StorageKeys.authToken,
-        value: user.token,
-      );
-      await _secureStorageService.write(
-        key: StorageKeys.refreshToken,
-        value: user.refreshToken,
-      );
+      await _persistSession(user);
       return Success<User>(user);
     } on AppException catch (exception) {
       return Error<User>(exception.message);
     } catch (_) {
       return const Error<User>('errorVerifyOtpFailed');
     }
+  }
+
+  Future<void> _persistSession(User user) async {
+    await _secureStorageService.write(
+      key: StorageKeys.authToken,
+      value: user.token,
+    );
+    await _secureStorageService.write(
+      key: StorageKeys.refreshToken,
+      value: user.refreshToken,
+    );
   }
 }

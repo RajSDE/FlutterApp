@@ -10,6 +10,7 @@ import 'package:flutter_app/core/security/secure_storage.dart';
 import 'package:flutter_app/features/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:flutter_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
 import 'package:flutter_app/features/auth/domain/usecases/signup_with_email.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
@@ -71,6 +72,7 @@ Future<void> init({
     ),
   );
 
+  sl.registerLazySingleton(() => LoginWithDummyId(sl<AuthRepository>()));
   sl.registerLazySingleton(() => RequestLoginOtp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => VerifyLoginOtp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignupWithEmail(sl<AuthRepository>()));
@@ -81,6 +83,7 @@ Future<void> init({
 
   sl.registerFactory(
     () => AuthBloc(
+      loginWithDummyId: sl<LoginWithDummyId>(),
       requestLoginOtp: sl<RequestLoginOtp>(),
       verifyLoginOtp: sl<VerifyLoginOtp>(),
       signupWithEmail: sl<SignupWithEmail>(),

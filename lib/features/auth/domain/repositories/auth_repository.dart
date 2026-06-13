@@ -2,6 +2,10 @@ import 'package:flutter_app/features/auth/domain/entities/user.dart';
 import 'package:flutter_app/core/result/result.dart';
 
 abstract class AuthRepository {
+  Future<Result<User>> loginWithDummyId({
+    required String dummyUserId,
+  });
+
   Future<Result<Unit>> requestLoginOtp({
     required String phoneNumber,
   });

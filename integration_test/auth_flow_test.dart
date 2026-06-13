@@ -24,6 +24,8 @@ void main() {
   testWidgets('completes signup flow', (tester) async {
     await pumpApp(tester);
 
+    await tester.ensureVisible(find.text("Don't have an account? Sign up"));
+    await tester.pumpAndSettle();
     await tester.tap(find.text("Don't have an account? Sign up"));
     await tester.pumpAndSettle();
 
@@ -31,7 +33,18 @@ void main() {
     await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome! You are logged in.'), findsOneWidget);
+    expect(find.text('Shop by category'), findsOneWidget);
+  });
+
+  testWidgets('completes dummy login flow', (tester) async {
+    await pumpApp(tester);
+
+    await tester.ensureVisible(find.text('Login with Dummy ID'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Login with Dummy ID'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Shop by category'), findsOneWidget);
   });
 
   testWidgets('completes OTP login flow', (tester) async {
@@ -46,6 +59,6 @@ void main() {
     await tester.tap(find.text('Verify OTP'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome! You are logged in.'), findsOneWidget);
+    expect(find.text('Shop by category'), findsOneWidget);
   });
 }

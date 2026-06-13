@@ -41,6 +41,27 @@ class MockBackendInterceptor extends Interceptor {
           ),
         );
         return;
+      case '/auth/dummy-login':
+        final dummyUserId =
+            (options.data as Map<String, dynamic>)['dummyUserId'] as String? ??
+                '';
+        if (dummyUserId.trim().isEmpty) {
+          handler.reject(_error(options, 400, AppErrorKeys.invalidDummyId));
+          return;
+        }
+        handler.resolve(
+          _response(
+            options,
+            <String, dynamic>{
+              'id': 999,
+              'name': 'Demo Shopper',
+              'email': '$dummyUserId@demo.quickcommerce',
+              'token': 'dummy_access_token_123',
+              'refreshToken': 'dummy_refresh_token_123',
+            },
+          ),
+        );
+        return;
       case '/auth/request-otp':
         final phone =
             (options.data as Map<String, dynamic>)['phone'] as String? ?? '';

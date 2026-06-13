@@ -2,6 +2,10 @@ import 'package:flutter_app/core/network/api_client.dart';
 import 'package:flutter_app/features/auth/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
+  Future<UserModel> loginWithDummyId({
+    required String dummyUserId,
+  });
+
   Future<void> requestLoginOtp({
     required String phoneNumber,
   });
@@ -21,6 +25,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       : _apiClient = apiClient;
 
   final ApiClient _apiClient;
+
+  @override
+  Future<UserModel> loginWithDummyId({
+    required String dummyUserId,
+  }) async {
+    final response = await _apiClient.post(
+      '/auth/dummy-login',
+      data: <String, dynamic>{'dummyUserId': dummyUserId},
+    );
+
+    return UserModel.fromJson(response);
+  }
 
   @override
   Future<void> requestLoginOtp({

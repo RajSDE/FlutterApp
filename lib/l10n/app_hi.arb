@@ -3,6 +3,10 @@
   "appName": "ऐप नाम",
   "loginTitle": "अपने अकाउंट में लॉगिन करें",
   "loginSubtitle": "वन-टाइम पासवर्ड पाने के लिए अपना मोबाइल नंबर दर्ज करें",
+  "dummyLoginTitle": "डेवलपमेंट लॉगिन",
+  "dummyLoginSubtitle": "बैकएंड API तैयार होने तक डमी यूज़र ID इस्तेमाल करें",
+  "dummyUserIdHint": "डमी यूज़र ID",
+  "loginWithDummyId": "डमी ID से लॉगिन करें",
   "otpTitle": "वेरिफिकेशन कोड दर्ज करें",
   "otpSubtitle": "हमने आपके मोबाइल नंबर पर 6 अंकों का ओटीपी भेजा है",
   "mobileNumberHint": "मोबाइल नंबर दर्ज करें",
@@ -32,6 +36,8 @@
   "errorRequestOtpFailed": "अभी ओटीपी अनुरोध नहीं किया जा सका।",
   "errorVerifyOtpFailed": "अभी ओटीपी सत्यापित नहीं किया जा सका।",
   "errorSignupFailed": "अभी साइन अप पूरा नहीं हो सका।",
+  "errorInvalidDummyId": "कृपया सही डमी यूज़र ID दर्ज करें।",
+  "errorDummyLoginFailed": "अभी डमी ID से लॉगिन नहीं किया जा सका।",
   "otpSentMessage": "+91 {phone} पर ओटीपी भेज दिया गया है",
   "@otpSentMessage": {
     "placeholders": {
@@ -40,5 +46,32 @@
       }
     }
   },
-  "otpResent": "ओटीपी फिर भेज दिया गया है"
+  "otpResent": "ओटीपी फिर भेज दिया गया है",
+  "homeDeliveryTime": "10 मिनट डिलीवरी",
+  "homeLocationTitle": "डिलीवरी यहां",
+  "homeLocationValue": "घर, सेक्टर 21",
+  "homeSearchHint": "दूध, फल, स्नैक्स खोजें",
+  "homeHeroTitle": "ताज़ा सामान आपके दरवाज़े पर",
+  "homeHeroSubtitle": "रोज़मर्रा की ज़रूरतें, स्नैक्स और तुरंत cravings तेज़ डिलीवरी के साथ।",
+  "homeCategoriesTitle": "कैटेगरी से खरीदें",
+  "homeDealsTitle": "आज की तेज़ डील्स",
+  "homeEssentialsTitle": "डेली एसेंशियल्स",
+  "homeSeeAll": "सभी देखें",
+  "homeCart": "कार्ट",
+  "categoryFruits": "फल",
+  "categoryDairy": "डेयरी",
+  "categorySnacks": "स्नैक्स",
+  "categoryBakery": "बेकरी",
+  "categoryDrinks": "ड्रिंक्स",
+  "categoryPersonalCare": "केयर",
+  "dealMorningSaver": "मॉर्निंग सेवर",
+  "dealMorningSaverSubtitle": "ब्रेकफास्ट बेसिक्स पर 30% तक छूट",
+  "dealSnackRush": "स्नैक रश",
+  "dealSnackRushSubtitle": "चिप्स, डिप्स और ठंडी ड्रिंक्स",
+  "productBanana": "ताज़ा केला",
+  "productMilk": "टोन्ड दूध",
+  "productBread": "होल व्हीट ब्रेड",
+  "productEggs": "फार्म अंडे",
+  "productPotatoChips": "पोटैटो चिप्स",
+  "productAdd": "जोड़ें"
 }
