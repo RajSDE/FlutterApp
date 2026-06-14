@@ -3,6 +3,8 @@ import 'package:flutter_app/core/error/app_exception.dart';
 import 'package:flutter_app/core/result/result.dart';
 import 'package:flutter_app/core/security/secure_storage.dart';
 import 'package:flutter_app/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:flutter_app/features/auth/domain/entities/register_user_request.dart';
+import 'package:flutter_app/features/auth/domain/entities/registration_result.dart';
 import 'package:flutter_app/features/auth/domain/entities/user.dart';
 import 'package:flutter_app/features/auth/domain/repositories/auth_repository.dart';
 
@@ -47,17 +49,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<User>> signupWithEmail({
-    required String email,
+  Future<Result<RegistrationResult>> registerUser({
+    required RegisterUserRequest request,
   }) async {
     try {
-      final user = await _remoteDataSource.signupWithEmail(email: email);
-      await _persistSession(user);
-      return Success<User>(user);
+      final result = await _remoteDataSource.registerUser(request: request);
+      return Success<RegistrationResult>(result);
     } on AppException catch (exception) {
-      return Error<User>(exception.message);
+      return Error<RegistrationResult>(exception.message);
     } catch (_) {
-      return const Error<User>('errorSignupFailed');
+      return const Error<RegistrationResult>('errorSignupFailed');
     }
   }
 

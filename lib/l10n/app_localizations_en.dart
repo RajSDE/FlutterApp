@@ -71,7 +71,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupTitle => 'Create an account';
 
   @override
-  String get signupSubtitle => 'Enter your email to sign up for this app';
+  String get signupSubtitle => 'Register with your profile details';
+
+  @override
+  String get usernameHint => 'Username (optional)';
+
+  @override
+  String get passwordHint => 'Password';
+
+  @override
+  String get firstNameHint => 'First name';
+
+  @override
+  String get lastNameHint => 'Last name';
+
+  @override
+  String get mobileNumberSignupHint => 'Mobile number';
+
+  @override
+  String get genderHint => 'Gender';
+
+  @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get genderOther => 'Other';
 
   @override
   String get emailHint => 'email@domain.com';

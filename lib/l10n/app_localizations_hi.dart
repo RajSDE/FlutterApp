@@ -71,8 +71,34 @@ class AppLocalizationsHi extends AppLocalizations {
   String get signupTitle => 'अकाउंट बनाएं';
 
   @override
-  String get signupSubtitle =>
-      'इस ऐप के लिए साइन अप करने हेतु अपना ईमेल दर्ज करें';
+  String get signupSubtitle => 'अपनी प्रोफाइल जानकारी के साथ रजिस्टर करें';
+
+  @override
+  String get usernameHint => 'यूज़रनेम (वैकल्पिक)';
+
+  @override
+  String get passwordHint => 'पासवर्ड';
+
+  @override
+  String get firstNameHint => 'पहला नाम';
+
+  @override
+  String get lastNameHint => 'अंतिम नाम';
+
+  @override
+  String get mobileNumberSignupHint => 'मोबाइल नंबर';
+
+  @override
+  String get genderHint => 'लिंग';
+
+  @override
+  String get genderMale => 'पुरुष';
+
+  @override
+  String get genderFemale => 'महिला';
+
+  @override
+  String get genderOther => 'अन्य';
 
   @override
   String get emailHint => 'email@domain.com';

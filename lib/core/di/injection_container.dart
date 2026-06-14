@@ -11,8 +11,8 @@ import 'package:flutter_app/features/auth/data/datasource/auth_remote_datasource
 import 'package:flutter_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
+import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
-import 'package:flutter_app/features/auth/domain/usecases/signup_with_email.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_app/shared/cubit/app_locale_cubit.dart';
@@ -75,7 +75,7 @@ Future<void> init({
   sl.registerLazySingleton(() => LoginWithDummyId(sl<AuthRepository>()));
   sl.registerLazySingleton(() => RequestLoginOtp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => VerifyLoginOtp(sl<AuthRepository>()));
-  sl.registerLazySingleton(() => SignupWithEmail(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => RegisterUser(sl<AuthRepository>()));
 
   sl.registerLazySingleton(
     () => AppLocaleCubit(secureStorageService: sl<SecureStorageService>()),
@@ -86,7 +86,7 @@ Future<void> init({
       loginWithDummyId: sl<LoginWithDummyId>(),
       requestLoginOtp: sl<RequestLoginOtp>(),
       verifyLoginOtp: sl<VerifyLoginOtp>(),
-      signupWithEmail: sl<SignupWithEmail>(),
+      registerUser: sl<RegisterUser>(),
     ),
   );
 }

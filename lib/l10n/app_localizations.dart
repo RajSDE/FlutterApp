@@ -221,8 +221,62 @@ abstract class AppLocalizations {
   /// No description provided for @signupSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Enter your email to sign up for this app'**
+  /// **'Register with your profile details'**
   String get signupSubtitle;
+
+  /// No description provided for @usernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Username (optional)'**
+  String get usernameHint;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordHint;
+
+  /// No description provided for @firstNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get firstNameHint;
+
+  /// No description provided for @lastNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get lastNameHint;
+
+  /// No description provided for @mobileNumberSignupHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get mobileNumberSignupHint;
+
+  /// No description provided for @genderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get genderHint;
+
+  /// No description provided for @genderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get genderMale;
+
+  /// No description provided for @genderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get genderFemale;
+
+  /// No description provided for @genderOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get genderOther;
 
   /// No description provided for @emailHint.
   ///

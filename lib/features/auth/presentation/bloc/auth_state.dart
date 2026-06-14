@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_app/features/auth/domain/entities/registration_result.dart';
 import 'package:flutter_app/features/auth/domain/entities/user.dart';
 
 abstract class AuthState extends Equatable {
@@ -39,6 +40,15 @@ class AuthAuthenticated extends AuthState {
 
   @override
   List<Object?> get props => <Object?>[user];
+}
+
+class AuthRegistered extends AuthState {
+  const AuthRegistered(this.registrationResult);
+
+  final RegistrationResult registrationResult;
+
+  @override
+  List<Object?> get props => <Object?>[registrationResult];
 }
 
 class AuthFailure extends AuthState {

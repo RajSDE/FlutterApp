@@ -8,7 +8,8 @@ class ApiClient {
   Future<Map<String, dynamic>> post(
     String path, {
     Map<String, dynamic>? data,
+    Map<String, dynamic>? headers,
   }) {
-    return _networkService.post(path, data: data);
+    return _networkService.post(path, data: data, headers: headers);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_app/features/auth/domain/entities/register_user_request.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -44,11 +45,11 @@ class OtpVerificationRequested extends AuthEvent {
 
 class SignupRequested extends AuthEvent {
   const SignupRequested({
-    required this.email,
+    required this.request,
   });
 
-  final String email;
+  final RegisterUserRequest request;
 
   @override
-  List<Object?> get props => <Object?>[email];
+  List<Object?> get props => <Object?>[request];
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
+import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
-import 'package:flutter_app/features/auth/domain/usecases/signup_with_email.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_state.dart';
@@ -11,11 +11,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required LoginWithDummyId loginWithDummyId,
     required RequestLoginOtp requestLoginOtp,
     required VerifyLoginOtp verifyLoginOtp,
-    required SignupWithEmail signupWithEmail,
+    required RegisterUser registerUser,
   })  : _loginWithDummyId = loginWithDummyId,
         _requestLoginOtp = requestLoginOtp,
         _verifyLoginOtp = verifyLoginOtp,
-        _signupWithEmail = signupWithEmail,
+        _registerUser = registerUser,
         super(const AuthInitial()) {
     on<DummyLoginRequested>(_onDummyLoginRequested);
     on<LoginRequested>(_onLoginRequested);
@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginWithDummyId _loginWithDummyId;
   final RequestLoginOtp _requestLoginOtp;
   final VerifyLoginOtp _verifyLoginOtp;
-  final SignupWithEmail _signupWithEmail;
+  final RegisterUser _registerUser;
 
   Future<void> _onDummyLoginRequested(
     DummyLoginRequested event,
@@ -82,10 +82,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(const AuthLoading());
 
-    final result = await _signupWithEmail(email: event.email);
+    final result = await _registerUser(request: event.request);
     emit(
       result.when(
-        success: AuthAuthenticated.new,
+        success: AuthRegistered.new,
         failure: AuthFailure.new,
       ),
     );

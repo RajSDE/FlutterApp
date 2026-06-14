@@ -26,11 +26,13 @@ class NetworkService {
   Future<Map<String, dynamic>> post(
     String path, {
     Map<String, dynamic>? data,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
         path,
         data: data,
+        options: headers == null ? null : Options(headers: headers),
       );
       return response.data ?? <String, dynamic>{};
     } on DioException catch (exception) {

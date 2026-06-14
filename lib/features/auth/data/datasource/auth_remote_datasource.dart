@@ -1,5 +1,9 @@
+import 'package:flutter_app/config/environment/api_endpoints.dart';
 import 'package:flutter_app/core/network/api_client.dart';
+import 'package:flutter_app/features/auth/data/models/register_user_request_model.dart';
+import 'package:flutter_app/features/auth/data/models/registration_result_model.dart';
 import 'package:flutter_app/features/auth/data/models/user_model.dart';
+import 'package:flutter_app/features/auth/domain/entities/register_user_request.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserModel> loginWithDummyId({
@@ -15,8 +19,8 @@ abstract class AuthRemoteDataSource {
     required String otp,
   });
 
-  Future<UserModel> signupWithEmail({
-    required String email,
+  Future<RegistrationResultModel> registerUser({
+    required RegisterUserRequest request,
   });
 }
 
@@ -31,7 +35,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String dummyUserId,
   }) async {
     final response = await _apiClient.post(
-      '/auth/dummy-login',
+      ApiEndpoints.dummyLogin,
       data: <String, dynamic>{'dummyUserId': dummyUserId},
     );
 
@@ -43,7 +47,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String phoneNumber,
   }) async {
     await _apiClient.post(
-      '/auth/request-otp',
+      ApiEndpoints.requestOtp,
       data: <String, dynamic>{'phone': phoneNumber},
     );
   }
@@ -54,7 +58,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String otp,
   }) async {
     final response = await _apiClient.post(
-      '/auth/verify-otp',
+      ApiEndpoints.verifyOtp,
       data: <String, dynamic>{
         'phone': phoneNumber,
         'otp': otp,
@@ -65,13 +69,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> signupWithEmail({
-    required String email,
+  Future<RegistrationResultModel> registerUser({
+    required RegisterUserRequest request,
   }) async {
+    final model = RegisterUserRequestModel.fromEntity(request);
     final response = await _apiClient.post(
-      '/auth/signup',
-      data: <String, dynamic>{'email': email},
+      ApiEndpoints.registerUser,
+      data: model.toJson(),
+      headers: <String, dynamic>{
+        'Accept-Language': request.preferredLanguage,
+      },
     );
-    return UserModel.fromJson(response);
+    return RegistrationResultModel.fromJson(response);
   }
 }

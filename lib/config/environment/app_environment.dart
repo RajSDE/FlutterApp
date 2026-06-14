@@ -36,11 +36,11 @@ class AppEnvironment {
         return const AppEnvironment(
           flavor: AppFlavor.development,
           appName: 'Flutter App Dev',
-          baseUrl: 'https://dev.example.com/api',
+          baseUrl: 'http://10.0.2.2:8080',
           connectTimeoutInMs: 15000,
           receiveTimeoutInMs: 15000,
           enableNetworkLogs: true,
-          useMockServer: true,
+          useMockServer: false,
         );
       case AppFlavor.staging:
         return const AppEnvironment(
