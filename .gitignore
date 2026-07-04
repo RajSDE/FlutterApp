@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+# Except release artifacts
+!README.md
+!app-release.apk
+!.gitignore
