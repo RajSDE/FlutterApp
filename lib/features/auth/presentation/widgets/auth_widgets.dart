@@ -44,6 +44,7 @@ class AuthLanguageSwitcher extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.mutedSurface,
           borderRadius: BorderRadius.circular(AppRadii.sm),
+          border: Border.all(color: AppColors.border),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -156,6 +157,7 @@ class AuthSocialButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.mutedSurface,
           borderRadius: BorderRadius.circular(AppRadii.md),
+          border: Border.all(color: AppColors.border),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -261,22 +263,22 @@ InputDecoration authInputDecoration({
       fontWeight: FontWeight.w500,
     ),
     filled: true,
-    fillColor: Colors.white,
+    fillColor: AppColors.inputBackground,
     contentPadding: const EdgeInsets.symmetric(
       horizontal: 20,
       vertical: 20,
     ),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: Color(0xFFD9D9D9)),
+      borderRadius: BorderRadius.circular(AppRadii.md),
+      borderSide: const BorderSide(color: AppColors.inputBorder),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: Color(0xFFD9D9D9)),
+      borderRadius: BorderRadius.circular(AppRadii.md),
+      borderSide: const BorderSide(color: AppColors.inputBorder),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: Colors.black),
+      borderRadius: BorderRadius.circular(AppRadii.md),
+      borderSide: const BorderSide(color: AppColors.inputBorderFocused),
     ),
   );
 }

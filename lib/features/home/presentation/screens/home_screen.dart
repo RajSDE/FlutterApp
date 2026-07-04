@@ -408,10 +408,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.cardBackground,
                   borderRadius: BorderRadius.circular(AppRadii.lg),
                   border: Border.all(
-                    color: AppColors.border.withValues(alpha: 0.5),
+                    color: AppColors.border,
                   ),
                 ),
                 child: Column(
