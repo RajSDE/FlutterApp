@@ -20,7 +20,8 @@ class _MockVerifyLoginOtp extends Mock implements VerifyLoginOtp {}
 
 class _MockRegisterUser extends Mock implements RegisterUser {}
 
-class _MockLoginWithMobileAndPassword extends Mock implements LoginWithMobileAndPassword {}
+class _MockLoginWithMobileAndPassword extends Mock
+    implements LoginWithMobileAndPassword {}
 
 void main() {
   const user = User(
