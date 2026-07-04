@@ -19,42 +19,33 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _otpController = TextEditingController();
-  final TextEditingController _dummyUserController = TextEditingController(
-    text: 'demo-user-001',
-  );
-  bool _isOtpStep = false;
+  final TextEditingController _passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
     _phoneController.dispose();
-    _otpController.dispose();
-    _dummyUserController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
-  void _handleDummyLogin() {
-    context.read<AuthBloc>().add(
-          DummyLoginRequested(
-            dummyUserId: _dummyUserController.text.trim(),
-          ),
-        );
-  }
-
   void _handleContinue() {
-    if (_isOtpStep) {
-      context.read<AuthBloc>().add(
-            OtpVerificationRequested(
-              phoneNumber: _phoneController.text.trim(),
-              otp: _otpController.text.trim(),
-            ),
-          );
+    final phone = _phoneController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (phone.isEmpty) {
+      _showMessage(context.l10n.errorInvalidMobile);
+      return;
+    }
+    if (password.isEmpty) {
+      _showMessage('Please enter your password');
       return;
     }
 
     context.read<AuthBloc>().add(
-          LoginRequested(
-            phoneNumber: _phoneController.text.trim(),
+          LoginWithPasswordRequested(
+            mobileNumber: phone,
+            password: password,
           ),
         );
   }
@@ -70,22 +61,12 @@ class _LoginScreenState extends State<LoginScreen> {
     final l10n = context.l10n;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.scaffold,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is OtpSent) {
-            setState(() {
-              _isOtpStep = true;
-            });
-            _showMessage(l10n.otpSentMessage(state.phoneNumber));
-          } else if (state is AuthAuthenticated) {
+          if (state is AuthAuthenticated) {
             Navigator.of(context).pushReplacementNamed(AppRouter.home);
           } else if (state is AuthFailure) {
-            if (!state.isOtpStep) {
-              setState(() {
-                _isOtpStep = false;
-              });
-            }
             _showMessage(state.message);
           }
         },
@@ -97,41 +78,52 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 l10n.appName,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -1,
                     ),
               ),
               const SizedBox(height: AppSpacing.authHeaderGap),
               AuthSectionHeader(
-                title: _isOtpStep ? l10n.otpTitle : l10n.loginTitle,
-                subtitle: _isOtpStep ? l10n.otpSubtitle : l10n.loginSubtitle,
+                title: l10n.loginTitle,
+                subtitle: l10n.loginSubtitle,
               ),
               const SizedBox(height: AppSpacing.xxl),
               TextField(
                 controller: _phoneController,
-                enabled: !_isOtpStep,
                 keyboardType: TextInputType.phone,
                 decoration: authInputDecoration(
                   hintText: l10n.mobileNumberHint,
-                  prefixText: '+91  ',
+                ).copyWith(
+                  prefixIcon: const Icon(Icons.phone_iphone_outlined, color: AppColors.textSecondary),
                 ),
               ),
-              if (_isOtpStep) ...<Widget>[
-                const SizedBox(height: AppSpacing.md),
-                TextField(
-                  controller: _otpController,
-                  keyboardType: TextInputType.number,
-                  maxLength: 6,
-                  decoration: authInputDecoration(
-                    hintText: l10n.otpHint,
-                    counterText: '',
+              const SizedBox(height: AppSpacing.md),
+              TextField(
+                controller: _passwordController,
+                obscureText: _obscurePassword,
+                decoration: authInputDecoration(
+                  hintText: l10n.passwordHint,
+                ).copyWith(
+                  prefixIcon: const Icon(Icons.lock_outline, color: AppColors.textSecondary),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      color: AppColors.textSecondary,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
                   ),
                 ),
-              ],
+              ),
               const SizedBox(height: AppSpacing.lg),
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   return PrimaryButton(
-                    label: _isOtpStep ? l10n.verifyOtp : l10n.continueText,
+                    label: l10n.continueText,
                     isLoading: state is AuthLoading,
                     backgroundColor: AppColors.buttonPrimary,
                     foregroundColor: AppColors.buttonOnPrimary,
@@ -139,69 +131,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 },
               ),
-              if (!_isOtpStep) ...<Widget>[
-                const SizedBox(height: AppSpacing.section),
-                AuthSectionHeader(
-                  title: l10n.dummyLoginTitle,
-                  subtitle: l10n.dummyLoginSubtitle,
+              const SizedBox(height: AppSpacing.lg),
+              const AuthDivider(),
+              const SizedBox(height: AppSpacing.section),
+              AuthSocialButton(
+                label: l10n.continueWithGoogle,
+                icon: const BrandCircle(
+                  label: 'G',
+                  textColor: Color(0xFF4285F4),
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                TextField(
-                  controller: _dummyUserController,
-                  decoration: authInputDecoration(
-                    hintText: l10n.dummyUserIdHint,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    return PrimaryButton(
-                      label: l10n.loginWithDummyId,
-                      isLoading: state is AuthLoading,
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.buttonOnPrimary,
-                      onPressed: _handleDummyLogin,
-                    );
-                  },
-                ),
-              ],
+              ),
               const SizedBox(height: AppSpacing.md),
-              if (_isOtpStep)
-                TextButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          LoginRequested(
-                            phoneNumber: _phoneController.text.trim(),
-                          ),
-                        );
-                    _showMessage(l10n.otpResent);
-                  },
-                  child: Text(
-                    l10n.resendOtp,
-                    style: const TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              if (!_isOtpStep) ...<Widget>[
-                const SizedBox(height: AppSpacing.lg),
-                const AuthDivider(),
-                const SizedBox(height: AppSpacing.section),
-                AuthSocialButton(
-                  label: l10n.continueWithGoogle,
-                  icon: const BrandCircle(
-                    label: 'G',
-                    textColor: Color(0xFF4285F4),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                AuthSocialButton(
-                  label: l10n.continueWithApple,
-                  icon: const Icon(Icons.apple, size: 34, color: Colors.black),
-                ),
-              ],
+              AuthSocialButton(
+                label: l10n.continueWithApple,
+                icon: const Icon(Icons.apple, size: 34, color: Colors.black),
+              ),
               const SizedBox(height: AppSpacing.xxl),
               TextButton(
                 onPressed: () {
@@ -210,9 +154,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   l10n.signupPrompt,
                   style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+                    color: AppColors.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

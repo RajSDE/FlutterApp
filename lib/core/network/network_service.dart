@@ -15,6 +15,7 @@ class NetworkService {
       headers: const <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'X-Tenant-Id': 'DEFAULT',
       },
     );
     _dio.interceptors.clear();

@@ -1,7 +1,8 @@
 import 'package:flutter_app/core/result/result.dart';
-import 'package:flutter_app/features/auth/domain/entities/user.dart';
+import 'package:flutter_app/features/auth/domain/entities/register_user_request.dart';
+import 'package:flutter_app/features/auth/domain/entities/registration_result.dart';
 import 'package:flutter_app/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutter_app/features/auth/domain/usecases/signup_with_email.dart';
+import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,29 +10,41 @@ class _MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
   late AuthRepository repository;
-  late SignupWithEmail useCase;
+  late RegisterUser useCase;
 
   setUp(() {
     repository = _MockAuthRepository();
-    useCase = SignupWithEmail(repository);
+    useCase = RegisterUser(repository);
   });
 
-  test('delegates signup to repository', () async {
-    const user = User(
-      id: 1,
-      name: 'Tester',
-      email: 'tester@example.com',
-      token: 'token',
-      refreshToken: 'refresh-token',
+  test('delegates user registration to repository', () async {
+    const request = RegisterUserRequest(
+      username: 'john_doe',
+      email: 'john.doe@example.com',
+      password: 'SecurePassword123!',
+      firstName: 'John',
+      lastName: 'Doe',
+      mobileNumber: '+1234567890',
+      preferredLanguage: 'en',
+      gender: 'MALE',
     );
+
+    const expectedResult = RegistrationResult(
+      traceId: 'trace-123',
+      status: 'SUCCESS',
+      message: 'Registration successful',
+      userProfileId: 'profile-123',
+      username: 'john_doe',
+      email: 'john.doe@example.com',
+    );
+
     when(
-      () => repository.signupWithEmail(email: 'tester@example.com'),
-    ).thenAnswer((_) async => const Success<User>(user));
+      () => repository.registerUser(request: request),
+    ).thenAnswer((_) async => const Success<RegistrationResult>(expectedResult));
 
-    final result = await useCase(email: 'tester@example.com');
+    final result = await useCase(request: request);
 
-    expect(result, isA<Success<User>>());
-    verify(() => repository.signupWithEmail(email: 'tester@example.com'))
-        .called(1);
+    expect(result, isA<Success<RegistrationResult>>());
+    verify(() => repository.registerUser(request: request)).called(1);
   });
 }

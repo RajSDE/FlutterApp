@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
+import 'package:flutter_app/features/auth/domain/usecases/login_with_mobile_and_password.dart';
 import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
@@ -12,21 +13,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required RequestLoginOtp requestLoginOtp,
     required VerifyLoginOtp verifyLoginOtp,
     required RegisterUser registerUser,
+    required LoginWithMobileAndPassword loginWithMobileAndPassword,
   })  : _loginWithDummyId = loginWithDummyId,
         _requestLoginOtp = requestLoginOtp,
         _verifyLoginOtp = verifyLoginOtp,
         _registerUser = registerUser,
+        _loginWithMobileAndPassword = loginWithMobileAndPassword,
         super(const AuthInitial()) {
     on<DummyLoginRequested>(_onDummyLoginRequested);
     on<LoginRequested>(_onLoginRequested);
     on<OtpVerificationRequested>(_onOtpVerificationRequested);
     on<SignupRequested>(_onSignupRequested);
+    on<LoginWithPasswordRequested>(_onLoginWithPasswordRequested);
   }
 
   final LoginWithDummyId _loginWithDummyId;
   final RequestLoginOtp _requestLoginOtp;
   final VerifyLoginOtp _verifyLoginOtp;
   final RegisterUser _registerUser;
+  final LoginWithMobileAndPassword _loginWithMobileAndPassword;
 
   Future<void> _onDummyLoginRequested(
     DummyLoginRequested event,
@@ -86,6 +91,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(
       result.when(
         success: AuthRegistered.new,
+        failure: AuthFailure.new,
+      ),
+    );
+  }
+
+  Future<void> _onLoginWithPasswordRequested(
+    LoginWithPasswordRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+
+    final result = await _loginWithMobileAndPassword(
+      mobileNumber: event.mobileNumber,
+      password: event.password,
+    );
+    emit(
+      result.when(
+        success: AuthAuthenticated.new,
         failure: AuthFailure.new,
       ),
     );

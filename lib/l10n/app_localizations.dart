@@ -113,7 +113,7 @@ abstract class AppLocalizations {
   /// No description provided for @loginSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Enter your mobile number to receive a one-time password'**
+  /// **'Enter your mobile number and password to login'**
   String get loginSubtitle;
 
   /// No description provided for @dummyLoginTitle.
@@ -367,6 +367,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to complete signup right now.'**
   String get errorSignupFailed;
+
+  /// No description provided for @errorLoginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid mobile number or password.'**
+  String get errorLoginFailed;
 
   /// No description provided for @errorInvalidDummyId.
   ///

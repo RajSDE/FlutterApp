@@ -2,8 +2,9 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_app/core/result/result.dart';
 import 'package:flutter_app/features/auth/domain/entities/user.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
+import 'package:flutter_app/features/auth/domain/usecases/login_with_mobile_and_password.dart';
+import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
-import 'package:flutter_app/features/auth/domain/usecases/signup_with_email.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_event.dart';
@@ -17,7 +18,9 @@ class _MockLoginWithDummyId extends Mock implements LoginWithDummyId {}
 
 class _MockVerifyLoginOtp extends Mock implements VerifyLoginOtp {}
 
-class _MockSignupWithEmail extends Mock implements SignupWithEmail {}
+class _MockRegisterUser extends Mock implements RegisterUser {}
+
+class _MockLoginWithMobileAndPassword extends Mock implements LoginWithMobileAndPassword {}
 
 void main() {
   const user = User(
@@ -31,13 +34,15 @@ void main() {
   late RequestLoginOtp requestLoginOtp;
   late LoginWithDummyId loginWithDummyId;
   late VerifyLoginOtp verifyLoginOtp;
-  late SignupWithEmail signupWithEmail;
+  late RegisterUser registerUser;
+  late LoginWithMobileAndPassword loginWithMobileAndPassword;
 
   setUp(() {
     loginWithDummyId = _MockLoginWithDummyId();
     requestLoginOtp = _MockRequestLoginOtp();
     verifyLoginOtp = _MockVerifyLoginOtp();
-    signupWithEmail = _MockSignupWithEmail();
+    registerUser = _MockRegisterUser();
+    loginWithMobileAndPassword = _MockLoginWithMobileAndPassword();
   });
 
   AuthBloc buildBloc() {
@@ -45,7 +50,8 @@ void main() {
       loginWithDummyId: loginWithDummyId,
       requestLoginOtp: requestLoginOtp,
       verifyLoginOtp: verifyLoginOtp,
-      signupWithEmail: signupWithEmail,
+      registerUser: registerUser,
+      loginWithMobileAndPassword: loginWithMobileAndPassword,
     );
   }
 
@@ -102,17 +108,48 @@ void main() {
   );
 
   blocTest<AuthBloc, AuthState>(
-    'emits loading then failure when signup fails',
+    'emits loading then authenticated when password login succeeds',
     build: () {
       when(
-        () => signupWithEmail(email: 'bad-email'),
-      ).thenAnswer((_) async => const Error<User>('errorInvalidEmail'));
+        () => loginWithMobileAndPassword(
+          mobileNumber: '+1234567890',
+          password: 'SecurePassword123!',
+        ),
+      ).thenAnswer((_) async => const Success<User>(user));
       return buildBloc();
     },
-    act: (bloc) => bloc.add(const SignupRequested(email: 'bad-email')),
+    act: (bloc) => bloc.add(
+      const LoginWithPasswordRequested(
+        mobileNumber: '+1234567890',
+        password: 'SecurePassword123!',
+      ),
+    ),
     expect: () => <AuthState>[
       const AuthLoading(),
-      const AuthFailure('errorInvalidEmail'),
+      const AuthAuthenticated(user),
+    ],
+  );
+
+  blocTest<AuthBloc, AuthState>(
+    'emits loading then failure when password login fails',
+    build: () {
+      when(
+        () => loginWithMobileAndPassword(
+          mobileNumber: '+1234567890',
+          password: 'WrongPassword',
+        ),
+      ).thenAnswer((_) async => const Error<User>('errorLoginFailed'));
+      return buildBloc();
+    },
+    act: (bloc) => bloc.add(
+      const LoginWithPasswordRequested(
+        mobileNumber: '+1234567890',
+        password: 'WrongPassword',
+      ),
+    ),
+    expect: () => <AuthState>[
+      const AuthLoading(),
+      const AuthFailure('errorLoginFailed'),
     ],
   );
 }

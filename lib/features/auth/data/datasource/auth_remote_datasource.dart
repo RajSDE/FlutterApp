@@ -19,6 +19,11 @@ abstract class AuthRemoteDataSource {
     required String otp,
   });
 
+  Future<UserModel> loginWithMobileAndPassword({
+    required String mobileNumber,
+    required String password,
+  });
+
   Future<RegistrationResultModel> registerUser({
     required RegisterUserRequest request,
   });
@@ -69,6 +74,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
+  Future<UserModel> loginWithMobileAndPassword({
+    required String mobileNumber,
+    required String password,
+  }) async {
+    final response = await _apiClient.post(
+      ApiEndpoints.loginUser,
+      data: <String, dynamic>{
+        'mobileNumber': mobileNumber,
+        'password': password,
+      },
+      headers: <String, dynamic>{
+        'X-Tenant-Id': 'DEFAULT',
+      },
+    );
+
+    return UserModel.fromJson(response);
+  }
+
+  @override
   Future<RegistrationResultModel> registerUser({
     required RegisterUserRequest request,
   }) async {
@@ -78,6 +102,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       data: model.toJson(),
       headers: <String, dynamic>{
         'Accept-Language': request.preferredLanguage,
+        'X-Tenant-Id': 'DEFAULT',
       },
     );
     return RegistrationResultModel.fromJson(response);

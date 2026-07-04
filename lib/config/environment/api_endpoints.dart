@@ -4,6 +4,7 @@ class ApiEndpoints {
   static const String verifyOtp = '/auth/verify-otp';
   static const String signup = '/auth/signup';
   static const String registerUser = '/v1/user/register';
+  static const String loginUser = '/v1/user/login';
   static const String refreshToken = '/auth/refresh-token';
 
   const ApiEndpoints._();

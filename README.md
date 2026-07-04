@@ -175,3 +175,46 @@ flutter pub get
 flutter devices
 flutter run -d emulator-5554
 ```
+
+---
+
+## 12. Enterprise Architecture Overview
+
+This project is built using a strict multi-layer **Clean Architecture** implementation split into core layers inside `lib/features/`:
+
+```
+lib/
+├── config/             # Endpoints, environment flavors, routers
+├── core/               # Shared HTTP api clients, dependency injection, exception contracts
+├── features/
+│   └── auth/           # Authentication domain, data, and presentation layers
+│       ├── data/       # DataSource implementations and Models mapping raw JSON
+│       ├── domain/     # Entities, contracts (Repositories), and Use Cases
+│       └── presentation/# BLoCs, screen layouts, and state management widgets
+├── l10n/               # ARB localization definitions (English, Hindi)
+└── shared/             # Base UI widgets, buttons, radii, and color palettes
+```
+
+### Dependency Injection
+Dependencies are managed using the Service Locator pattern with `get_it`. Registrations are defined inside `lib/core/di/injection_container.dart` where repositories, datasources, BLoCs, and configurations are initialized dynamically.
+
+### State Management
+State handling uses `flutter_bloc` to guarantee clean reactive behavior and clear separation between visual presentation and business rules.
+
+---
+
+## 13. REST APIs Integration & Mock Server
+
+### Integrations
+- **Registration**: `POST /v1/user/register`
+- **Login**: `POST /v1/user/login`
+
+All network traffic automatically incorporates the `X-Tenant-Id: client-alpha` (or specified override) and `Content-Type: application/json` headers.
+
+### Development Environment Flavors
+We configure environments inside `lib/config/environment/app_environment.dart`:
+- **Development**: Connects to the local server endpoint `http://10.0.2.2:8080` (or `localhost` for web/iOS). The Mock Server Interceptor is disabled.
+- **Staging / Production**: Utilizes the built-in `MockBackendInterceptor` (configured via `useMockServer: true`) for rapid UI validation and isolated offline testing.
+
+To toggle between mock server testing and real server testing in local development, toggle the `useMockServer` variable under `AppFlavor.development` in `app_environment.dart`.
+

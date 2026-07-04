@@ -17,6 +17,11 @@ abstract class AuthRepository {
     required String otp,
   });
 
+  Future<Result<User>> loginWithMobileAndPassword({
+    required String mobileNumber,
+    required String password,
+  });
+
   Future<Result<RegistrationResult>> registerUser({
     required RegisterUserRequest request,
   });

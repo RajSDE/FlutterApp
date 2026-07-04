@@ -16,7 +16,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get loginSubtitle =>
-      'वन-टाइम पासवर्ड पाने के लिए अपना मोबाइल नंबर दर्ज करें';
+      'लॉगिन करने के लिए अपना मोबाइल नंबर और पासवर्ड दर्ज करें';
 
   @override
   String get dummyLoginTitle => 'डेवलपमेंट लॉगिन';
@@ -144,6 +144,9 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get errorSignupFailed => 'अभी साइन अप पूरा नहीं हो सका।';
+
+  @override
+  String get errorLoginFailed => 'अमान्य मोबाइल नंबर या पासवर्ड।';
 
   @override
   String get errorInvalidDummyId => 'कृपया सही डमी यूज़र ID दर्ज करें।';

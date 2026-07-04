@@ -53,3 +53,16 @@ class SignupRequested extends AuthEvent {
   @override
   List<Object?> get props => <Object?>[request];
 }
+
+class LoginWithPasswordRequested extends AuthEvent {
+  const LoginWithPasswordRequested({
+    required this.mobileNumber,
+    required this.password,
+  });
+
+  final String mobileNumber;
+  final String password;
+
+  @override
+  List<Object?> get props => <Object?>[mobileNumber, password];
+}

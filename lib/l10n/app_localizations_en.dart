@@ -15,8 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginTitle => 'Login to your account';
 
   @override
-  String get loginSubtitle =>
-      'Enter your mobile number to receive a one-time password';
+  String get loginSubtitle => 'Enter your mobile number and password to login';
 
   @override
   String get dummyLoginTitle => 'Development login';
@@ -144,6 +143,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorSignupFailed => 'Unable to complete signup right now.';
+
+  @override
+  String get errorLoginFailed => 'Invalid mobile number or password.';
 
   @override
   String get errorInvalidDummyId => 'Enter a valid dummy user ID.';

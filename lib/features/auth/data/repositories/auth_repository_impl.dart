@@ -63,6 +63,25 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Result<User>> loginWithMobileAndPassword({
+    required String mobileNumber,
+    required String password,
+  }) async {
+    try {
+      final user = await _remoteDataSource.loginWithMobileAndPassword(
+        mobileNumber: mobileNumber,
+        password: password,
+      );
+      await _persistSession(user);
+      return Success<User>(user);
+    } on AppException catch (exception) {
+      return Error<User>(exception.message);
+    } catch (_) {
+      return const Error<User>('errorLoginFailed');
+    }
+  }
+
+  @override
   Future<Result<User>> verifyLoginOtp({
     required String phoneNumber,
     required String otp,

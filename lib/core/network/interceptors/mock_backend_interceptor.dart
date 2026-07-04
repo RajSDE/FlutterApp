@@ -118,6 +118,45 @@ class MockBackendInterceptor extends Interceptor {
           ),
         );
         return;
+      case '/v1/user/register':
+        final data = options.data as Map<String, dynamic>;
+        final email = data['email'] as String? ?? '';
+        final username = data['username'] as String? ?? 'user';
+        handler.resolve(
+          _response(
+            options,
+            <String, dynamic>{
+              'traceId': 'trace-12345',
+              'status': 'SUCCESS',
+              'message': 'Registration successful',
+              'userProfileId': 'profile-999',
+              'username': username,
+              'email': email,
+            },
+          ),
+        );
+        return;
+      case '/v1/user/login':
+        final data = options.data as Map<String, dynamic>;
+        final mobileNumber = data['mobileNumber'] as String? ?? '';
+        final password = data['password'] as String? ?? '';
+        if (mobileNumber.isEmpty || password.isEmpty) {
+          handler.reject(_error(options, 400, 'errorInvalidCredentials'));
+          return;
+        }
+        handler.resolve(
+          _response(
+            options,
+            <String, dynamic>{
+              'id': 100,
+              'name': 'John Doe',
+              'email': 'john.doe@example.com',
+              'token': 'mock_session_token_123',
+              'refreshToken': 'mock_session_refresh_123',
+            },
+          ),
+        );
+        return;
       default:
         handler.next(options);
     }
