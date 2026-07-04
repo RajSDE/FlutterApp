@@ -77,7 +77,8 @@ Future<void> init({
   sl.registerLazySingleton(() => RequestLoginOtp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => VerifyLoginOtp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => RegisterUser(sl<AuthRepository>()));
-  sl.registerLazySingleton(() => LoginWithMobileAndPassword(sl<AuthRepository>()));
+  sl.registerLazySingleton(
+      () => LoginWithMobileAndPassword(sl<AuthRepository>()));
 
   sl.registerLazySingleton(
     () => AppLocaleCubit(secureStorageService: sl<SecureStorageService>()),

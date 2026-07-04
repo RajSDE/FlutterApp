@@ -35,7 +35,8 @@ class AppLogInterceptor extends Interceptor {
       debugPrint(
         '[DIO][ERR] ${err.response?.statusCode} ${err.requestOptions.path} message=${err.message}',
       );
-      debugPrint('[API RESPONSE] ERROR: ${err.response?.statusCode} - ${err.response?.data}');
+      debugPrint(
+          '[API RESPONSE] ERROR: ${err.response?.statusCode} - ${err.response?.data}');
     }
     handler.next(err);
   }

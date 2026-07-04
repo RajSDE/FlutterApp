@@ -40,7 +40,8 @@ void main() {
 
     when(
       () => repository.registerUser(request: request),
-    ).thenAnswer((_) async => const Success<RegistrationResult>(expectedResult));
+    ).thenAnswer(
+        (_) async => const Success<RegistrationResult>(expectedResult));
 
     final result = await useCase(request: request);
 
