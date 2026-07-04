@@ -427,10 +427,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const Divider(),
-                    const ListTile(
-                      leading: Icon(Icons.language, color: AppColors.primary),
-                      title: Text('Change Language'),
-                      trailing: AuthLanguageSwitcher(),
+                    ListTile(
+                      leading:
+                          const Icon(Icons.language, color: AppColors.primary),
+                      title: const Text('Change Language'),
+                      trailing: SizedBox(
+                        width: 120,
+                        child: const AuthLanguageSwitcher(),
+                      ),
                     ),
                     const Divider(),
                     ListTile(
