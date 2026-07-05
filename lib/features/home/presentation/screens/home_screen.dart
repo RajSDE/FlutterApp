@@ -340,7 +340,6 @@ class _HomeScreenState extends State<HomeScreen> {
         final name = user?.name ?? 'John Doe';
         final email = user?.email ?? 'john.doe@example.com';
         final mobileNumber = user?.mobileNumber ?? '9631341874';
-        final token = user?.token ?? 'DEFAULT_TOKEN';
         final isMobileVerified = user?.mobileNumberVerified == 'Y';
         final isEmailVerified = user?.emailVerified == 'Y';
 
