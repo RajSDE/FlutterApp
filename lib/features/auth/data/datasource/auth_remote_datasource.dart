@@ -29,6 +29,16 @@ abstract class AuthRemoteDataSource {
   });
 
   Future<UserModel> getUserProfile({required String userProfileId});
+
+  Future<String> sendIdentifierVerification({
+    required String identifierType,
+    required String identifierValue,
+  });
+
+  Future<void> validateIdentifierOtp({
+    required String uniqueId,
+    required String otp,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -116,5 +126,40 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       '/v1/user/$userProfileId',
     );
     return UserModel.fromJson(response);
+  }
+
+  @override
+  Future<String> sendIdentifierVerification({
+    required String identifierType,
+    required String identifierValue,
+  }) async {
+    final response = await _apiClient.post(
+      ApiEndpoints.identifierVerification,
+      data: <String, dynamic>{
+        'identifierType': identifierType,
+        'identifierValue': identifierValue,
+      },
+      headers: <String, dynamic>{
+        'X-Tenant-Id': 'DEFAULT',
+      },
+    );
+    return response['uniqueId'] as String;
+  }
+
+  @override
+  Future<void> validateIdentifierOtp({
+    required String uniqueId,
+    required String otp,
+  }) async {
+    await _apiClient.post(
+      ApiEndpoints.validateOtp,
+      data: <String, dynamic>{
+        'uniqueId': uniqueId,
+        'otp': otp,
+      },
+      headers: <String, dynamic>{
+        'X-Tenant-Id': 'DEFAULT',
+      },
+    );
   }
 }

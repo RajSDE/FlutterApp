@@ -25,4 +25,14 @@ abstract class AuthRepository {
   Future<Result<RegistrationResult>> registerUser({
     required RegisterUserRequest request,
   });
+
+  Future<Result<String>> sendIdentifierVerification({
+    required String identifierType,
+    required String identifierValue,
+  });
+
+  Future<Result<Unit>> validateIdentifierOtp({
+    required String uniqueId,
+    required String otp,
+  });
 }

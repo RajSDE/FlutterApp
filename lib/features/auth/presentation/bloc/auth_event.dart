@@ -79,3 +79,33 @@ class VerificationCompleted extends AuthEvent {
   @override
   List<Object?> get props => <Object?>[isEmail, newValue];
 }
+
+class SendVerificationCodeRequested extends AuthEvent {
+  const SendVerificationCodeRequested({
+    required this.identifierType,
+    required this.identifierValue,
+  });
+
+  final String identifierType;
+  final String identifierValue;
+
+  @override
+  List<Object?> get props => <Object?>[identifierType, identifierValue];
+}
+
+class ValidateVerificationOtpRequested extends AuthEvent {
+  const ValidateVerificationOtpRequested({
+    required this.uniqueId,
+    required this.otp,
+    required this.isEmail,
+    required this.identifierValue,
+  });
+
+  final String uniqueId;
+  final String otp;
+  final bool isEmail;
+  final String identifierValue;
+
+  @override
+  List<Object?> get props => <Object?>[uniqueId, otp, isEmail, identifierValue];
+}

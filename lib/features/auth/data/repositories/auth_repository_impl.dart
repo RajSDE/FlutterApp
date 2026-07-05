@@ -151,4 +151,40 @@ class AuthRepositoryImpl implements AuthRepository {
       value: user.refreshToken,
     );
   }
+
+  @override
+  Future<Result<String>> sendIdentifierVerification({
+    required String identifierType,
+    required String identifierValue,
+  }) async {
+    try {
+      final uniqueId = await _remoteDataSource.sendIdentifierVerification(
+        identifierType: identifierType,
+        identifierValue: identifierValue,
+      );
+      return Success<String>(uniqueId);
+    } on AppException catch (exception) {
+      return Error<String>(exception.message);
+    } catch (_) {
+      return const Error<String>('errorSendVerificationFailed');
+    }
+  }
+
+  @override
+  Future<Result<Unit>> validateIdentifierOtp({
+    required String uniqueId,
+    required String otp,
+  }) async {
+    try {
+      await _remoteDataSource.validateIdentifierOtp(
+        uniqueId: uniqueId,
+        otp: otp,
+      );
+      return const Success<Unit>(unit);
+    } on AppException catch (exception) {
+      return Error<Unit>(exception.message);
+    } catch (_) {
+      return const Error<Unit>('errorValidateOtpFailed');
+    }
+  }
 }

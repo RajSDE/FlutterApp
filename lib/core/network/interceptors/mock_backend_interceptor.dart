@@ -183,6 +183,51 @@ class MockBackendInterceptor extends Interceptor {
           ),
         );
         return;
+      case '/v1/user/identifier-verification':
+        final data = options.data as Map<String, dynamic>;
+        final identifierType = data['identifierType'] as String? ?? '';
+        final identifierValue = data['identifierValue'] as String? ?? '';
+        if (identifierType != 'MOBILE' && identifierType != 'EMAIL') {
+          handler.reject(_error(options, 400, 'errorInvalidIdentifierType'));
+          return;
+        }
+        if (identifierValue.isEmpty) {
+          handler.reject(_error(options, 400, 'errorInvalidIdentifierValue'));
+          return;
+        }
+        handler.resolve(
+          _response(
+            options,
+            <String, dynamic>{
+              'traceId': 'mock-trace-verification',
+              'status': 'SUCCESS',
+              'message': 'Verification code sent successfully',
+              'uniqueId':
+                  'mock-unique-id-${DateTime.now().millisecondsSinceEpoch}',
+            },
+          ),
+        );
+        return;
+      case '/v1/user/validate-otp':
+        final data = options.data as Map<String, dynamic>;
+        final uniqueId = data['uniqueId'] as String? ?? '';
+        final otp = data['otp'] as String? ?? '';
+        if (uniqueId.isEmpty || otp.length != 6) {
+          handler.reject(_error(options, 400, 'errorInvalidOtpRequest'));
+          return;
+        }
+        handler.resolve(
+          _response(
+            options,
+            <String, dynamic>{
+              'traceId': 'mock-trace-validate-otp',
+              'status': 'SUCCESS',
+              'message': 'OTP verified successfully',
+              'error': null,
+            },
+          ),
+        );
+        return;
       default:
         handler.next(options);
     }

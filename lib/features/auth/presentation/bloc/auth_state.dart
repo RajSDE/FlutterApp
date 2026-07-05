@@ -63,3 +63,34 @@ class AuthFailure extends AuthState {
   @override
   List<Object?> get props => <Object?>[message, isOtpStep];
 }
+
+class VerificationCodeSent extends AuthState {
+  const VerificationCodeSent(this.uniqueId);
+
+  final String uniqueId;
+
+  @override
+  List<Object?> get props => <Object?>[uniqueId];
+}
+
+class VerificationOtpValidated extends AuthState {
+  const VerificationOtpValidated({
+    required this.isEmail,
+    required this.identifierValue,
+  });
+
+  final bool isEmail;
+  final String identifierValue;
+
+  @override
+  List<Object?> get props => <Object?>[isEmail, identifierValue];
+}
+
+class VerificationFailure extends AuthState {
+  const VerificationFailure(this.message);
+
+  final String message;
+
+  @override
+  List<Object?> get props => <Object?>[message];
+}

@@ -14,6 +14,8 @@ import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.da
 import 'package:flutter_app/features/auth/domain/usecases/login_with_mobile_and_password.dart';
 import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
+import 'package:flutter_app/features/auth/domain/usecases/send_identifier_verification.dart';
+import 'package:flutter_app/features/auth/domain/usecases/validate_identifier_otp.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_app/shared/cubit/app_locale_cubit.dart';
@@ -79,6 +81,9 @@ Future<void> init({
   sl.registerLazySingleton(() => RegisterUser(sl<AuthRepository>()));
   sl.registerLazySingleton(
       () => LoginWithMobileAndPassword(sl<AuthRepository>()));
+  sl.registerLazySingleton(
+      () => SendIdentifierVerification(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => ValidateIdentifierOtp(sl<AuthRepository>()));
 
   sl.registerLazySingleton(
     () => AppLocaleCubit(secureStorageService: sl<SecureStorageService>()),
@@ -91,6 +96,8 @@ Future<void> init({
       verifyLoginOtp: sl<VerifyLoginOtp>(),
       registerUser: sl<RegisterUser>(),
       loginWithMobileAndPassword: sl<LoginWithMobileAndPassword>(),
+      sendIdentifierVerification: sl<SendIdentifierVerification>(),
+      validateIdentifierOtp: sl<ValidateIdentifierOtp>(),
     ),
   );
 }

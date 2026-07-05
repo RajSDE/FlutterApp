@@ -5,6 +5,8 @@ import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.da
 import 'package:flutter_app/features/auth/domain/usecases/login_with_mobile_and_password.dart';
 import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
 import 'package:flutter_app/features/auth/domain/usecases/request_login_otp.dart';
+import 'package:flutter_app/features/auth/domain/usecases/send_identifier_verification.dart';
+import 'package:flutter_app/features/auth/domain/usecases/validate_identifier_otp.dart';
 import 'package:flutter_app/features/auth/domain/usecases/verify_login_otp.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_event.dart';
@@ -23,6 +25,12 @@ class _MockRegisterUser extends Mock implements RegisterUser {}
 class _MockLoginWithMobileAndPassword extends Mock
     implements LoginWithMobileAndPassword {}
 
+class _MockSendIdentifierVerification extends Mock
+    implements SendIdentifierVerification {}
+
+class _MockValidateIdentifierOtp extends Mock
+    implements ValidateIdentifierOtp {}
+
 void main() {
   const user = User(
     id: 1,
@@ -37,6 +45,8 @@ void main() {
   late VerifyLoginOtp verifyLoginOtp;
   late RegisterUser registerUser;
   late LoginWithMobileAndPassword loginWithMobileAndPassword;
+  late SendIdentifierVerification sendIdentifierVerification;
+  late ValidateIdentifierOtp validateIdentifierOtp;
 
   setUp(() {
     loginWithDummyId = _MockLoginWithDummyId();
@@ -44,6 +54,8 @@ void main() {
     verifyLoginOtp = _MockVerifyLoginOtp();
     registerUser = _MockRegisterUser();
     loginWithMobileAndPassword = _MockLoginWithMobileAndPassword();
+    sendIdentifierVerification = _MockSendIdentifierVerification();
+    validateIdentifierOtp = _MockValidateIdentifierOtp();
   });
 
   AuthBloc buildBloc() {
@@ -53,6 +65,8 @@ void main() {
       verifyLoginOtp: verifyLoginOtp,
       registerUser: registerUser,
       loginWithMobileAndPassword: loginWithMobileAndPassword,
+      sendIdentifierVerification: sendIdentifierVerification,
+      validateIdentifierOtp: validateIdentifierOtp,
     );
   }
 
