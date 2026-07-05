@@ -66,3 +66,16 @@ class LoginWithPasswordRequested extends AuthEvent {
   @override
   List<Object?> get props => <Object?>[mobileNumber, password];
 }
+
+class VerificationCompleted extends AuthEvent {
+  const VerificationCompleted({
+    required this.isEmail,
+    required this.newValue,
+  });
+
+  final bool isEmail;
+  final String newValue;
+
+  @override
+  List<Object?> get props => <Object?>[isEmail, newValue];
+}

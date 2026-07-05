@@ -4,6 +4,7 @@ import 'package:flutter_app/config/routes/app_router.dart';
 import 'package:flutter_app/core/extensions/localization_extension.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:flutter_app/features/auth/presentation/screens/verification_screen.dart';
 import 'package:flutter_app/features/auth/presentation/widgets/auth_widgets.dart';
 import 'package:flutter_app/shared/theme/app_colors.dart';
 import 'package:flutter_app/shared/theme/app_radii.dart';
@@ -418,17 +419,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                      leading: const Icon(Icons.token_outlined,
-                          color: AppColors.primary),
-                      title: const Text('Session Profile ID'),
-                      subtitle: Text(
-                        token,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const Divider(),
-                    ListTile(
                       leading: const Icon(Icons.phone_iphone_outlined,
                           color: AppColors.primary),
                       title: const Text('Mobile Number'),
@@ -437,13 +427,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? const Icon(Icons.verified, color: Colors.blue)
                           : TextButton(
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Verification code sent!'),
+                                Navigator.of(context).pushNamed(
+                                  AppRouter.verification,
+                                  arguments: VerificationArgs(
+                                    isEmail: false,
+                                    currentValue: mobileNumber,
                                   ),
                                 );
                               },
-                              child: const Text('Verify'),
+                              child: const Text('Edit'),
                             ),
                     ),
                     const Divider(),
@@ -456,13 +448,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? const Icon(Icons.verified, color: Colors.blue)
                           : TextButton(
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Verification email sent!'),
+                                Navigator.of(context).pushNamed(
+                                  AppRouter.verification,
+                                  arguments: VerificationArgs(
+                                    isEmail: true,
+                                    currentValue: email,
                                   ),
                                 );
                               },
-                              child: const Text('Verify'),
+                              child: const Text('Edit'),
                             ),
                     ),
                     const Divider(),

@@ -25,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<OtpVerificationRequested>(_onOtpVerificationRequested);
     on<SignupRequested>(_onSignupRequested);
     on<LoginWithPasswordRequested>(_onLoginWithPasswordRequested);
+    on<VerificationCompleted>(_onVerificationCompleted);
   }
 
   final LoginWithDummyId _loginWithDummyId;
@@ -124,5 +125,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         failure: AuthFailure.new,
       ),
     );
+  }
+
+  Future<void> _onVerificationCompleted(
+    VerificationCompleted event,
+    Emitter<AuthState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is AuthAuthenticated) {
+      final updatedUser = currentState.user.copyWith(
+        email: event.isEmail ? event.newValue : currentState.user.email,
+        mobileNumber:
+            !event.isEmail ? event.newValue : currentState.user.mobileNumber,
+        emailVerified: event.isEmail ? 'Y' : currentState.user.emailVerified,
+        mobileNumberVerified:
+            !event.isEmail ? 'Y' : currentState.user.mobileNumberVerified,
+      );
+      emit(AuthAuthenticated(updatedUser));
+    }
   }
 }

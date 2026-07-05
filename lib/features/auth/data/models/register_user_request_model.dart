@@ -35,6 +35,8 @@ class RegisterUserRequestModel extends RegisterUserRequest {
       'mobileNumber': mobileNumber,
       'preferredLanguage': preferredLanguage,
       'gender': gender,
+      'mobileNumberVerified': 'Y',
+      'emailVerified': 'N',
     };
   }
 }

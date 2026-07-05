@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/core/extensions/localization_extension.dart';
 import 'package:flutter_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter_app/features/auth/presentation/screens/signup_screen.dart';
+import 'package:flutter_app/features/auth/presentation/screens/verification_screen.dart';
 import 'package:flutter_app/features/home/presentation/screens/home_screen.dart';
 
 class AppRouter {
   static const String login = '/';
   static const String signup = '/signup';
   static const String home = '/home';
+  static const String verification = '/verification';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -24,6 +26,12 @@ class AppRouter {
       case home:
         return MaterialPageRoute<void>(
           builder: (_) => const HomeScreen(),
+          settings: settings,
+        );
+      case verification:
+        final args = settings.arguments as VerificationArgs;
+        return MaterialPageRoute<void>(
+          builder: (_) => VerificationScreen(args: args),
           settings: settings,
         );
       default:
