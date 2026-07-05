@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appName": "App name",
+  "appName": "Little Mart",
   "loginTitle": "Login to your account",
   "loginSubtitle": "Enter your mobile number and password to login",
   "dummyLoginTitle": "Development login",
