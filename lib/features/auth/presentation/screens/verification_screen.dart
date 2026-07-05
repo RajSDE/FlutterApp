@@ -31,7 +31,10 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   late final TextEditingController _valueController;
   final TextEditingController _otpController = TextEditingController();
+  late AuthBloc _authBloc;
+  bool _didInitBloc = false;
   bool _codeSent = false;
+  bool _hasVerified = false;
   bool _isLoading = false;
   int _timerSeconds = 0;
   Timer? _timer;
@@ -41,6 +44,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
   void initState() {
     super.initState();
     _valueController = TextEditingController(text: widget.args.currentValue);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_didInitBloc) {
+      _authBloc = context.read<AuthBloc>();
+      _didInitBloc = true;
+    }
   }
 
   @override
@@ -57,6 +69,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
     });
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       if (_timerSeconds == 0) {
         timer.cancel();
       } else {
@@ -91,6 +107,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
             identifierValue: value,
           ),
         );
+  }
+
+  void _handleCancel() {
+    if (_codeSent && !_hasVerified) {
+      _authBloc.add(const RestorePreviousAuthStateRequested());
+    }
+    Navigator.of(context).pop();
   }
 
   void _handleVerifyOtp() {
@@ -150,6 +173,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         } else if (state is VerificationOtpValidated) {
           setState(() {
             _isLoading = false;
+            _hasVerified = true;
           });
           // Fire VerificationCompleted to update the user profile in AuthBloc
           context.read<AuthBloc>().add(
@@ -173,180 +197,186 @@ class _VerificationScreenState extends State<VerificationScreen> {
           });
         }
       },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            // Background Gradient Header
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 220,
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.secondary],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+      child: PopScope(
+        onPopInvokedWithResult: (_, __) {
+          if (_codeSent && !_hasVerified) {
+            _authBloc.add(const RestorePreviousAuthStateRequested());
+          }
+        },
+        child: Scaffold(
+          body: Stack(
+            children: [
+              // Background Gradient Header
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 220,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [AppColors.primary, AppColors.secondary],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                   ),
-                ),
-                child: SafeArea(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon:
-                              const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
+                  child: SafeArea(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: _handleCancel,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 8),
+                          Text(
+                            title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            // Main Body container overlapping the header
-            Positioned.fill(
-              top: 150,
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(AppSpacing.xl),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(AppRadii.lg),
-                        border: Border.all(color: AppColors.border),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
-                            blurRadius: 15,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Update and verify your $labelText below to secure your account.',
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                              height: 1.4,
+              // Main Body container overlapping the header
+              Positioned.fill(
+                top: 150,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(AppSpacing.xl),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(AppRadii.lg),
+                          border: Border.all(color: AppColors.border),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 15,
+                              offset: const Offset(0, 8),
                             ),
-                          ),
-                          const SizedBox(height: AppSpacing.xl),
-                          TextField(
-                            controller: _valueController,
-                            enabled: !_codeSent,
-                            keyboardType: widget.args.isEmail
-                                ? TextInputType.emailAddress
-                                : TextInputType.phone,
-                            decoration: authInputDecoration(
-                              hintText: inputHint,
-                            ).copyWith(
-                              prefixIcon: Icon(
-                                widget.args.isEmail
-                                    ? Icons.email_outlined
-                                    : Icons.phone_iphone_outlined,
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Update and verify your $labelText below to secure your account.',
+                              style: const TextStyle(
                                 color: AppColors.textSecondary,
+                                fontSize: 14,
+                                height: 1.4,
                               ),
                             ),
-                          ),
-                          if (_codeSent) ...[
-                            const SizedBox(height: AppSpacing.md),
+                            const SizedBox(height: AppSpacing.xl),
                             TextField(
-                              controller: _otpController,
-                              keyboardType: TextInputType.number,
-                              maxLength: 6,
+                              controller: _valueController,
+                              enabled: !_codeSent,
+                              keyboardType: widget.args.isEmail
+                                  ? TextInputType.emailAddress
+                                  : TextInputType.phone,
                               decoration: authInputDecoration(
-                                hintText: 'Enter 6-digit OTP code',
-                                counterText: '',
+                                hintText: inputHint,
                               ).copyWith(
-                                prefixIcon: const Icon(
-                                  Icons.security_outlined,
+                                prefixIcon: Icon(
+                                  widget.args.isEmail
+                                      ? Icons.email_outlined
+                                      : Icons.phone_iphone_outlined,
                                   color: AppColors.textSecondary,
                                 ),
                               ),
                             ),
+                            if (_codeSent) ...[
+                              const SizedBox(height: AppSpacing.md),
+                              TextField(
+                                controller: _otpController,
+                                keyboardType: TextInputType.number,
+                                maxLength: 6,
+                                decoration: authInputDecoration(
+                                  hintText: 'Enter 6-digit OTP code',
+                                  counterText: '',
+                                ).copyWith(
+                                  prefixIcon: const Icon(
+                                    Icons.security_outlined,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            const SizedBox(height: AppSpacing.xl),
+                            if (_isLoading)
+                              const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primary,
+                                ),
+                              )
+                            else
+                              SizedBox(
+                                width: double.infinity,
+                                height: 56,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.buttonPrimary,
+                                    foregroundColor: AppColors.buttonOnPrimary,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(AppRadii.md),
+                                    ),
+                                    elevation: 0,
+                                  ),
+                                  onPressed: _codeSent
+                                      ? _handleVerifyOtp
+                                      : _handleSendCode,
+                                  child: Text(
+                                    _codeSent ? 'Verify & Update' : 'Send Code',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (_codeSent) ...[
+                              const SizedBox(height: AppSpacing.md),
+                              Center(
+                                child: TextButton(
+                                  onPressed:
+                                      _timerSeconds == 0 ? _handleSendCode : null,
+                                  child: Text(
+                                    _timerSeconds == 0
+                                        ? 'Resend Verification Code'
+                                        : 'Resend code in ${_timerSeconds}s',
+                                    style: TextStyle(
+                                      color: _timerSeconds == 0
+                                          ? AppColors.primary
+                                          : AppColors.textSecondary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ],
-                          const SizedBox(height: AppSpacing.xl),
-                          if (_isLoading)
-                            const Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.primary,
-                              ),
-                            )
-                          else
-                            SizedBox(
-                              width: double.infinity,
-                              height: 56,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.buttonPrimary,
-                                  foregroundColor: AppColors.buttonOnPrimary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(AppRadii.md),
-                                  ),
-                                  elevation: 0,
-                                ),
-                                onPressed: _codeSent
-                                    ? _handleVerifyOtp
-                                    : _handleSendCode,
-                                child: Text(
-                                  _codeSent ? 'Verify & Update' : 'Send Code',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          if (_codeSent) ...[
-                            const SizedBox(height: AppSpacing.md),
-                            Center(
-                              child: TextButton(
-                                onPressed:
-                                    _timerSeconds == 0 ? _handleSendCode : null,
-                                child: Text(
-                                  _timerSeconds == 0
-                                      ? 'Resend Verification Code'
-                                      : 'Resend code in ${_timerSeconds}s',
-                                  style: TextStyle(
-                                    color: _timerSeconds == 0
-                                        ? AppColors.primary
-                                        : AppColors.textSecondary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 60),
-                  ],
+                      const SizedBox(height: 60),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

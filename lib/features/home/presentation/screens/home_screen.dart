@@ -351,12 +351,36 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildProfileView(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        final user = state is AuthAuthenticated ? state.user : null;
-        final name = user?.name ?? 'John Doe';
-        final email = user?.email ?? 'john.doe@example.com';
-        final mobileNumber = user?.mobileNumber ?? '9631341874';
-        final isMobileVerified = user?.mobileNumberVerified == 'Y';
-        final isEmailVerified = user?.emailVerified == 'Y';
+        if (state is! AuthAuthenticated) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.error_outline, size: 64, color: AppColors.primary),
+                  SizedBox(height: AppSpacing.md),
+                  Text(
+                    'Unable to load your profile. Please try again later.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final user = state.user;
+        final name = user.name;
+        final email = user.email;
+        final mobileNumber = user.mobileNumber;
+        final isMobileVerified = user.mobileNumberVerified == 'Y';
+        final isEmailVerified = user.emailVerified == 'Y';
 
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -440,14 +464,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       trailing: isMobileVerified
                           ? const Icon(Icons.verified, color: Colors.blue)
                           : TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed(
+                              onPressed: () async {
+                                final navigator = Navigator.of(context);
+                                final authBloc = context.read<AuthBloc>();
+                                await navigator.pushNamed(
                                   AppRouter.verification,
                                   arguments: VerificationArgs(
                                     isEmail: false,
                                     currentValue: mobileNumber,
                                   ),
                                 );
+                                if (!mounted) return;
+                                final currentState = authBloc.state;
+                                if (currentState is AuthAuthenticated) {
+                                  authBloc.add(
+                                    RefreshUserProfileRequested(
+                                      userProfileId: currentState.user.userProfileId,
+                                    ),
+                                  );
+                                }
                               },
                               child: const Text('Edit'),
                             ),
@@ -461,14 +496,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       trailing: isEmailVerified
                           ? const Icon(Icons.verified, color: Colors.blue)
                           : TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed(
+                              onPressed: () async {
+                                final navigator = Navigator.of(context);
+                                final authBloc = context.read<AuthBloc>();
+                                await navigator.pushNamed(
                                   AppRouter.verification,
                                   arguments: VerificationArgs(
                                     isEmail: true,
                                     currentValue: email,
                                   ),
                                 );
+                                if (!mounted) return;
+                                final currentState = authBloc.state;
+                                if (currentState is AuthAuthenticated) {
+                                  authBloc.add(
+                                    RefreshUserProfileRequested(
+                                      userProfileId: currentState.user.userProfileId,
+                                    ),
+                                  );
+                                }
                               },
                               child: const Text('Edit'),
                             ),

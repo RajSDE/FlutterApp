@@ -110,6 +110,10 @@ class ValidateVerificationOtpRequested extends AuthEvent {
   List<Object?> get props => <Object?>[uniqueId, otp, isEmail, identifierValue];
 }
 
+class RestorePreviousAuthStateRequested extends AuthEvent {
+  const RestorePreviousAuthStateRequested();
+}
+
 class RefreshUserProfileRequested extends AuthEvent {
   const RefreshUserProfileRequested({
     required this.userProfileId,

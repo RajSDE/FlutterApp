@@ -37,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerificationCompleted>(_onVerificationCompleted);
     on<SendVerificationCodeRequested>(_onSendVerificationCodeRequested);
     on<ValidateVerificationOtpRequested>(_onValidateVerificationOtpRequested);
+    on<RestorePreviousAuthStateRequested>(_onRestorePreviousAuthStateRequested);
     on<RefreshUserProfileRequested>(_onRefreshUserProfileRequested);
   }
 
@@ -209,6 +210,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         failure: VerificationFailure.new,
       ),
     );
+  }
+
+  Future<void> _onRestorePreviousAuthStateRequested(
+    RestorePreviousAuthStateRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    if (_savedAuthState != null) {
+      emit(_savedAuthState!);
+      _savedAuthState = null;
+    }
   }
 
   Future<void> _onRefreshUserProfileRequested(
