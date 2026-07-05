@@ -73,7 +73,27 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
       );
       await _persistSession(user);
-      return Success<User>(user);
+
+      // Fetch complete user profile details
+      try {
+        final profile = await _remoteDataSource.getUserProfile(
+          userProfileId: user.userProfileId,
+        );
+        final fullUser = user.copyWith(
+          name: profile.name,
+          email: profile.email,
+          mobileNumber: profile.mobileNumber,
+          gender: profile.gender,
+          preferredLanguage: profile.preferredLanguage,
+          mobileNumberVerified: profile.mobileNumberVerified,
+          emailVerified: profile.emailVerified,
+          userProfileId: profile.userProfileId,
+        );
+        return Success<User>(fullUser);
+      } catch (_) {
+        // Fallback to login user model if profile endpoint fails
+        return Success<User>(user);
+      }
     } on AppException catch (exception) {
       return Error<User>(exception.message);
     } catch (_) {
@@ -92,6 +112,27 @@ class AuthRepositoryImpl implements AuthRepository {
         otp: otp,
       );
       await _persistSession(user);
+
+      if (user.userProfileId.isNotEmpty) {
+        try {
+          final profile = await _remoteDataSource.getUserProfile(
+            userProfileId: user.userProfileId,
+          );
+          final fullUser = user.copyWith(
+            name: profile.name,
+            email: profile.email,
+            mobileNumber: profile.mobileNumber,
+            gender: profile.gender,
+            preferredLanguage: profile.preferredLanguage,
+            mobileNumberVerified: profile.mobileNumberVerified,
+            emailVerified: profile.emailVerified,
+            userProfileId: profile.userProfileId,
+          );
+          return Success<User>(fullUser);
+        } catch (_) {
+          return Success<User>(user);
+        }
+      }
       return Success<User>(user);
     } on AppException catch (exception) {
       return Error<User>(exception.message);

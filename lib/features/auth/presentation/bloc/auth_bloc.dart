@@ -88,11 +88,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthLoading());
 
     final result = await _registerUser(request: event.request);
-    emit(
-      result.when(
-        success: AuthRegistered.new,
-        failure: AuthFailure.new,
-      ),
+
+    await result.when(
+      success: (registrationResult) async {
+        final loginResult = await _loginWithMobileAndPassword(
+          mobileNumber: event.request.mobileNumber,
+          password: event.request.password,
+        );
+        emit(
+          loginResult.when(
+            success: (user) => AuthAuthenticated(user),
+            failure: (message) => AuthFailure(message),
+          ),
+        );
+      },
+      failure: (message) async {
+        emit(AuthFailure(message));
+      },
     );
   }
 

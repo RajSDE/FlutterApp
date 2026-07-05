@@ -45,4 +45,26 @@ class NetworkService {
       );
     }
   }
+
+  Future<Map<String, dynamic>> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  }) async {
+    try {
+      final response = await _dio.get<Map<String, dynamic>>(
+        path,
+        queryParameters: queryParameters,
+        options: headers == null ? null : Options(headers: headers),
+      );
+      return response.data ?? <String, dynamic>{};
+    } on DioException catch (exception) {
+      final messageKey = exception.response?.data is Map<String, dynamic>
+          ? (exception.response?.data['messageKey'] as String?)
+          : null;
+      throw AppException(
+        messageKey ?? exception.message ?? 'Unexpected network error.',
+      );
+    }
+  }
 }

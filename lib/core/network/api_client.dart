@@ -12,4 +12,16 @@ class ApiClient {
   }) {
     return _networkService.post(path, data: data, headers: headers);
   }
+
+  Future<Map<String, dynamic>> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  }) {
+    return _networkService.get(
+      path,
+      queryParameters: queryParameters,
+      headers: headers,
+    );
+  }
 }

@@ -335,12 +335,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildProfileView(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        final name = state is AuthAuthenticated ? state.user.name : 'John Doe';
-        final email = state is AuthAuthenticated
-            ? state.user.email
-            : 'john.doe@example.com';
-        final token =
-            state is AuthAuthenticated ? state.user.token : 'DEFAULT_TOKEN';
+        final user = state is AuthAuthenticated ? state.user : null;
+        final name = user?.name ?? 'John Doe';
+        final email = user?.email ?? 'john.doe@example.com';
+        final mobileNumber = user?.mobileNumber ?? '9631341874';
+        final token = user?.token ?? 'DEFAULT_TOKEN';
+        final isMobileVerified = user?.mobileNumberVerified == 'Y';
+        final isEmailVerified = user?.emailVerified == 'Y';
 
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -425,6 +426,44 @@ class _HomeScreenState extends State<HomeScreen> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.phone_iphone_outlined,
+                          color: AppColors.primary),
+                      title: const Text('Mobile Number'),
+                      subtitle: Text(mobileNumber),
+                      trailing: isMobileVerified
+                          ? const Icon(Icons.verified, color: Colors.blue)
+                          : TextButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Verification code sent!'),
+                                  ),
+                                );
+                              },
+                              child: const Text('Verify'),
+                            ),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.email_outlined,
+                          color: AppColors.primary),
+                      title: const Text('Email Address'),
+                      subtitle: Text(email),
+                      trailing: isEmailVerified
+                          ? const Icon(Icons.verified, color: Colors.blue)
+                          : TextButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Verification email sent!'),
+                                  ),
+                                );
+                              },
+                              child: const Text('Verify'),
+                            ),
                     ),
                     const Divider(),
                     ListTile(

@@ -27,6 +27,8 @@ abstract class AuthRemoteDataSource {
   Future<RegistrationResultModel> registerUser({
     required RegisterUserRequest request,
   });
+
+  Future<UserModel> getUserProfile({required String userProfileId});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -106,5 +108,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       },
     );
     return RegistrationResultModel.fromJson(response);
+  }
+
+  @override
+  Future<UserModel> getUserProfile({required String userProfileId}) async {
+    final response = await _apiClient.get(
+      '/v1/user/$userProfileId',
+    );
+    return UserModel.fromJson(response);
   }
 }

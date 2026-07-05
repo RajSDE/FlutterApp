@@ -20,6 +20,32 @@ class MockBackendInterceptor extends Interceptor {
 
     await Future<void>.delayed(const Duration(milliseconds: 300));
 
+    if (options.method == 'GET' && options.path.startsWith('/v1/user/')) {
+      final profileId = options.path.split('/').last;
+      handler.resolve(
+        _response(
+          options,
+          <String, dynamic>{
+            'traceId': 'trace-12345',
+            'status': 'SUCCESS',
+            'message': 'User profile details retrieved successfully',
+            'userProfileId': profileId,
+            'firstName': 'Raj',
+            'lastName': 'Kumar',
+            'fullName': 'Raj Kumar',
+            'email': 'raj@gmail.com',
+            'mobileNumber': '9631341874',
+            'gender': 'MALE',
+            'preferredLanguage': 'en',
+            'mobileNumberVerified': 'Y',
+            'emailVerified': 'Y',
+            'tenantId': 'DEFAULT'
+          },
+        ),
+      );
+      return;
+    }
+
     switch (options.path) {
       case '/auth/signup':
         final email =
