@@ -227,7 +227,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       child: Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            icon: const Icon(Icons.arrow_back,
+                                color: Colors.white),
                             onPressed: _handleCancel,
                           ),
                           const SizedBox(width: 8),
@@ -250,7 +251,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 top: 150,
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                   child: Column(
                     children: [
                       Container(
@@ -351,8 +353,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               const SizedBox(height: AppSpacing.md),
                               Center(
                                 child: TextButton(
-                                  onPressed:
-                                      _timerSeconds == 0 ? _handleSendCode : null,
+                                  onPressed: _timerSeconds == 0
+                                      ? _handleSendCode
+                                      : null,
                                   child: Text(
                                     _timerSeconds == 0
                                         ? 'Resend Verification Code'

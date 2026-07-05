@@ -479,7 +479,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 if (currentState is AuthAuthenticated) {
                                   authBloc.add(
                                     RefreshUserProfileRequested(
-                                      userProfileId: currentState.user.userProfileId,
+                                      userProfileId:
+                                          currentState.user.userProfileId,
                                     ),
                                   );
                                 }
@@ -511,7 +512,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 if (currentState is AuthAuthenticated) {
                                   authBloc.add(
                                     RefreshUserProfileRequested(
-                                      userProfileId: currentState.user.userProfileId,
+                                      userProfileId:
+                                          currentState.user.userProfileId,
                                     ),
                                   );
                                 }

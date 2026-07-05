@@ -247,7 +247,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             mobileNumberVerified: profile.mobileNumberVerified,
             emailVerified: profile.emailVerified,
             userProfileId: profile.userProfileId,
-            token: profile.token.isNotEmpty ? profile.token : currentState.user.token,
+            token: profile.token.isNotEmpty
+                ? profile.token
+                : currentState.user.token,
             refreshToken: profile.refreshToken.isNotEmpty
                 ? profile.refreshToken
                 : currentState.user.refreshToken,
