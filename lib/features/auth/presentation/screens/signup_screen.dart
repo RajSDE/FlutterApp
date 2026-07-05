@@ -506,25 +506,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       constraints: const BoxConstraints(maxWidth: 420),
                       child: Column(
                         children: <Widget>[
-                          const AuthDivider(),
-                          const SizedBox(height: AppSpacing.lg),
-                          AuthSocialButton(
-                            label: l10n.continueWithGoogle,
-                            icon: const BrandCircle(
-                              label: 'G',
-                              textColor: Color(0xFF4285F4),
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.md),
-                          AuthSocialButton(
-                            label: l10n.continueWithApple,
-                            icon: const Icon(
-                              Icons.apple,
-                              size: 32,
-                              color: Colors.black,
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.xxl),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context)
