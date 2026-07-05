@@ -37,12 +37,7 @@ class NetworkService {
       );
       return response.data ?? <String, dynamic>{};
     } on DioException catch (exception) {
-      final messageKey = exception.response?.data is Map<String, dynamic>
-          ? (exception.response?.data['messageKey'] as String?)
-          : null;
-      throw AppException(
-        messageKey ?? exception.message ?? 'Unexpected network error.',
-      );
+      throw AppException(_extractErrorMessage(exception));
     }
   }
 
@@ -59,12 +54,33 @@ class NetworkService {
       );
       return response.data ?? <String, dynamic>{};
     } on DioException catch (exception) {
-      final messageKey = exception.response?.data is Map<String, dynamic>
-          ? (exception.response?.data['messageKey'] as String?)
-          : null;
-      throw AppException(
-        messageKey ?? exception.message ?? 'Unexpected network error.',
-      );
+      throw AppException(_extractErrorMessage(exception));
     }
+  }
+
+  String _extractErrorMessage(DioException exception) {
+    final data = exception.response?.data;
+
+    if (data is Map<String, dynamic>) {
+      if (data['error'] is Map<String, dynamic>) {
+        final error = data['error'] as Map<String, dynamic>;
+        final message = error['message'] as String?;
+        if (message != null && message.isNotEmpty) {
+          return message;
+        }
+      }
+
+      final message = data['message'] as String?;
+      if (message != null && message.isNotEmpty) {
+        return message;
+      }
+
+      final messageKey = data['messageKey'] as String?;
+      if (messageKey != null && messageKey.isNotEmpty) {
+        return messageKey;
+      }
+    }
+
+    return exception.message ?? 'Unexpected network error.';
   }
 }
