@@ -20,8 +20,6 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -34,8 +32,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
-    _emailController.dispose();
     _passwordController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
@@ -69,26 +65,16 @@ class _SignupScreenState extends State<SignupScreen> {
       });
       _showMessage('Mobile number verified successfully');
     } else {
-      _showMessage('Invalid OTP verification code. Use 000000 to bypass.');
+      _showMessage('Invalid verification code. Please try again.');
     }
   }
 
   void _handleSignup() {
-    final username = _usernameController.text.trim();
-    final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     final firstName = _firstNameController.text.trim();
     final lastName = _lastNameController.text.trim();
     final phone = _mobileNumberController.text.trim();
 
-    if (username.isEmpty) {
-      _showMessage('Please enter a username');
-      return;
-    }
-    if (email.isEmpty || !email.contains('@')) {
-      _showMessage(context.l10n.errorInvalidEmail);
-      return;
-    }
     if (password.length < 6) {
       _showMessage('Password must be at least 6 characters');
       return;
@@ -103,6 +89,8 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     final preferredLanguage = Localizations.localeOf(context).languageCode;
+    final username = 'user_$phone';
+    final email = '$phone@temp.com';
 
     context.read<AuthBloc>().add(
           SignupRequested(
@@ -283,8 +271,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ] else if (_signupStep == 2) ...<Widget>[
                             const AuthSectionHeader(
                               title: 'Enter Verification Code',
-                              subtitle:
-                                  'Enter 000000 code to bypass verification locally',
+                              subtitle: 'Enter the 6-digit verification code',
                             ),
                           ] else ...<Widget>[
                             AuthSectionHeader(
@@ -373,31 +360,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                                 filled: true,
                                 fillColor: AppColors.mutedSurface,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.md),
-                            TextField(
-                              controller: _usernameController,
-                              decoration: authInputDecoration(
-                                hintText: l10n.usernameHint,
-                              ).copyWith(
-                                prefixIcon: const Icon(
-                                  Icons.account_circle_outlined,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.md),
-                            TextField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: authInputDecoration(
-                                hintText: l10n.emailHint,
-                              ).copyWith(
-                                prefixIcon: const Icon(
-                                  Icons.email_outlined,
-                                  color: AppColors.textSecondary,
-                                ),
                               ),
                             ),
                             const SizedBox(height: AppSpacing.md),
