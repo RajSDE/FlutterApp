@@ -109,3 +109,14 @@ class ValidateVerificationOtpRequested extends AuthEvent {
   @override
   List<Object?> get props => <Object?>[uniqueId, otp, isEmail, identifierValue];
 }
+
+class RefreshUserProfileRequested extends AuthEvent {
+  const RefreshUserProfileRequested({
+    required this.userProfileId,
+  });
+
+  final String userProfileId;
+
+  @override
+  List<Object?> get props => <Object?>[userProfileId];
+}

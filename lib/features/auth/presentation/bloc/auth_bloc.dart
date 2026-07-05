@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_app/features/auth/domain/usecases/get_user_profile.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_mobile_and_password.dart';
 import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
@@ -18,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required LoginWithMobileAndPassword loginWithMobileAndPassword,
     required SendIdentifierVerification sendIdentifierVerification,
     required ValidateIdentifierOtp validateIdentifierOtp,
+    required GetUserProfile getUserProfile,
   })  : _loginWithDummyId = loginWithDummyId,
         _requestLoginOtp = requestLoginOtp,
         _verifyLoginOtp = verifyLoginOtp,
@@ -25,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _loginWithMobileAndPassword = loginWithMobileAndPassword,
         _sendIdentifierVerification = sendIdentifierVerification,
         _validateIdentifierOtp = validateIdentifierOtp,
+        _getUserProfile = getUserProfile,
         super(const AuthInitial()) {
     on<DummyLoginRequested>(_onDummyLoginRequested);
     on<LoginRequested>(_onLoginRequested);
@@ -34,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerificationCompleted>(_onVerificationCompleted);
     on<SendVerificationCodeRequested>(_onSendVerificationCodeRequested);
     on<ValidateVerificationOtpRequested>(_onValidateVerificationOtpRequested);
+    on<RefreshUserProfileRequested>(_onRefreshUserProfileRequested);
   }
 
   final LoginWithDummyId _loginWithDummyId;
@@ -43,6 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginWithMobileAndPassword _loginWithMobileAndPassword;
   final SendIdentifierVerification _sendIdentifierVerification;
   final ValidateIdentifierOtp _validateIdentifierOtp;
+  final GetUserProfile _getUserProfile;
 
   /// Stores the authenticated state so we can restore it after verification
   AuthState? _savedAuthState;
@@ -202,6 +207,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           identifierValue: event.identifierValue,
         ),
         failure: VerificationFailure.new,
+      ),
+    );
+  }
+
+  Future<void> _onRefreshUserProfileRequested(
+    RefreshUserProfileRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! AuthAuthenticated) {
+      return;
+    }
+
+    final result = await _getUserProfile(
+      userProfileId: event.userProfileId,
+    );
+
+    emit(
+      result.when(
+        success: (profile) {
+          final updatedUser = currentState.user.copyWith(
+            name: profile.name,
+            email: profile.email,
+            mobileNumber: profile.mobileNumber,
+            gender: profile.gender,
+            preferredLanguage: profile.preferredLanguage,
+            mobileNumberVerified: profile.mobileNumberVerified,
+            emailVerified: profile.emailVerified,
+            userProfileId: profile.userProfileId,
+            token: profile.token.isNotEmpty ? profile.token : currentState.user.token,
+            refreshToken: profile.refreshToken.isNotEmpty
+                ? profile.refreshToken
+                : currentState.user.refreshToken,
+          );
+          return AuthAuthenticated(updatedUser);
+        },
+        failure: AuthFailure.new,
       ),
     );
   }

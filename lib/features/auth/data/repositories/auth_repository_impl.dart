@@ -64,6 +64,22 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Result<User>> getUserProfile({
+    required String userProfileId,
+  }) async {
+    try {
+      final profile = await _remoteDataSource.getUserProfile(
+        userProfileId: userProfileId,
+      );
+      return Success<User>(profile);
+    } on AppException catch (exception) {
+      return Error<User>(exception.message);
+    } catch (_) {
+      return const Error<User>('errorFetchUserProfileFailed');
+    }
+  }
+
+  @override
   Future<Result<User>> loginWithMobileAndPassword({
     required String mobileNumber,
     required String password,

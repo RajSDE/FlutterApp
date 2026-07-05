@@ -10,6 +10,7 @@ import 'package:flutter_app/core/security/secure_storage.dart';
 import 'package:flutter_app/features/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:flutter_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:flutter_app/features/auth/domain/usecases/get_user_profile.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_mobile_and_password.dart';
 import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
@@ -84,6 +85,7 @@ Future<void> init({
   sl.registerLazySingleton(
       () => SendIdentifierVerification(sl<AuthRepository>()));
   sl.registerLazySingleton(() => ValidateIdentifierOtp(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => GetUserProfile(sl<AuthRepository>()));
 
   sl.registerLazySingleton(
     () => AppLocaleCubit(secureStorageService: sl<SecureStorageService>()),
@@ -98,6 +100,7 @@ Future<void> init({
       loginWithMobileAndPassword: sl<LoginWithMobileAndPassword>(),
       sendIdentifierVerification: sl<SendIdentifierVerification>(),
       validateIdentifierOtp: sl<ValidateIdentifierOtp>(),
+      getUserProfile: sl<GetUserProfile>(),
     ),
   );
 }

@@ -27,6 +27,10 @@ abstract class AuthRepository {
     required RegisterUserRequest request,
   });
 
+  Future<Result<User>> getUserProfile({
+    required String userProfileId,
+  });
+
   Future<Result<VerificationResult>> sendIdentifierVerification({
     required String identifierType,
     required String identifierValue,

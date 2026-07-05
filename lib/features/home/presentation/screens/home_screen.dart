@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_app/config/routes/app_router.dart';
 import 'package:flutter_app/core/extensions/localization_extension.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:flutter_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_app/features/auth/presentation/screens/verification_screen.dart';
 import 'package:flutter_app/features/auth/presentation/widgets/auth_widgets.dart';
@@ -26,6 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _refreshProfile(BuildContext context) {
+    final state = context.read<AuthBloc>().state;
+    if (state is AuthAuthenticated && state.user.userProfileId.isNotEmpty) {
+      context.read<AuthBloc>().add(
+            RefreshUserProfileRequested(
+              userProfileId: state.user.userProfileId,
+            ),
+          );
+    }
   }
 
   @override
@@ -54,6 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             _selectedIndex = index;
           });
+          if (index == 2) {
+            _refreshProfile(context);
+          }
         },
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.textSecondary,

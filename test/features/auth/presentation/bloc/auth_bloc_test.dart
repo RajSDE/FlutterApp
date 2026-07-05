@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_app/core/result/result.dart';
 import 'package:flutter_app/features/auth/domain/entities/user.dart';
+import 'package:flutter_app/features/auth/domain/usecases/get_user_profile.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_dummy_id.dart';
 import 'package:flutter_app/features/auth/domain/usecases/login_with_mobile_and_password.dart';
 import 'package:flutter_app/features/auth/domain/usecases/register_user.dart';
@@ -31,6 +32,8 @@ class _MockSendIdentifierVerification extends Mock
 class _MockValidateIdentifierOtp extends Mock
     implements ValidateIdentifierOtp {}
 
+class _MockGetUserProfile extends Mock implements GetUserProfile {}
+
 void main() {
   const user = User(
     id: 1,
@@ -47,6 +50,7 @@ void main() {
   late LoginWithMobileAndPassword loginWithMobileAndPassword;
   late SendIdentifierVerification sendIdentifierVerification;
   late ValidateIdentifierOtp validateIdentifierOtp;
+  late GetUserProfile getUserProfile;
 
   setUp(() {
     loginWithDummyId = _MockLoginWithDummyId();
@@ -56,6 +60,7 @@ void main() {
     loginWithMobileAndPassword = _MockLoginWithMobileAndPassword();
     sendIdentifierVerification = _MockSendIdentifierVerification();
     validateIdentifierOtp = _MockValidateIdentifierOtp();
+    getUserProfile = _MockGetUserProfile();
   });
 
   AuthBloc buildBloc() {
@@ -67,6 +72,7 @@ void main() {
       loginWithMobileAndPassword: loginWithMobileAndPassword,
       sendIdentifierVerification: sendIdentifierVerification,
       validateIdentifierOtp: validateIdentifierOtp,
+      getUserProfile: getUserProfile,
     );
   }
 
