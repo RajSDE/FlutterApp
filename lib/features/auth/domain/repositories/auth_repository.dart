@@ -2,6 +2,7 @@ import 'package:flutter_app/features/auth/domain/entities/user.dart';
 import 'package:flutter_app/core/result/result.dart';
 import 'package:flutter_app/features/auth/domain/entities/register_user_request.dart';
 import 'package:flutter_app/features/auth/domain/entities/registration_result.dart';
+import 'package:flutter_app/features/auth/domain/entities/verification_result.dart';
 
 abstract class AuthRepository {
   Future<Result<User>> loginWithDummyId({
@@ -26,7 +27,7 @@ abstract class AuthRepository {
     required RegisterUserRequest request,
   });
 
-  Future<Result<String>> sendIdentifierVerification({
+  Future<Result<VerificationResult>> sendIdentifierVerification({
     required String identifierType,
     required String identifierValue,
   });

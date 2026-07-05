@@ -3,6 +3,7 @@ import 'package:flutter_app/core/network/api_client.dart';
 import 'package:flutter_app/features/auth/data/models/register_user_request_model.dart';
 import 'package:flutter_app/features/auth/data/models/registration_result_model.dart';
 import 'package:flutter_app/features/auth/data/models/user_model.dart';
+import 'package:flutter_app/features/auth/data/models/verification_result_model.dart';
 import 'package:flutter_app/features/auth/domain/entities/register_user_request.dart';
 
 abstract class AuthRemoteDataSource {
@@ -30,7 +31,7 @@ abstract class AuthRemoteDataSource {
 
   Future<UserModel> getUserProfile({required String userProfileId});
 
-  Future<String> sendIdentifierVerification({
+  Future<VerificationResultModel> sendIdentifierVerification({
     required String identifierType,
     required String identifierValue,
   });
@@ -129,7 +130,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> sendIdentifierVerification({
+  Future<VerificationResultModel> sendIdentifierVerification({
     required String identifierType,
     required String identifierValue,
   }) async {
@@ -143,7 +144,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'X-Tenant-Id': 'DEFAULT',
       },
     );
-    return response['uniqueId'] as String;
+    return VerificationResultModel.fromJson(response);
   }
 
   @override

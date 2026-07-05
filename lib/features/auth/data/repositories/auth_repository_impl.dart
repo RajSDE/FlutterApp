@@ -6,6 +6,7 @@ import 'package:flutter_app/features/auth/data/datasource/auth_remote_datasource
 import 'package:flutter_app/features/auth/domain/entities/register_user_request.dart';
 import 'package:flutter_app/features/auth/domain/entities/registration_result.dart';
 import 'package:flutter_app/features/auth/domain/entities/user.dart';
+import 'package:flutter_app/features/auth/domain/entities/verification_result.dart';
 import 'package:flutter_app/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -153,20 +154,20 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<String>> sendIdentifierVerification({
+  Future<Result<VerificationResult>> sendIdentifierVerification({
     required String identifierType,
     required String identifierValue,
   }) async {
     try {
-      final uniqueId = await _remoteDataSource.sendIdentifierVerification(
+      final result = await _remoteDataSource.sendIdentifierVerification(
         identifierType: identifierType,
         identifierValue: identifierValue,
       );
-      return Success<String>(uniqueId);
+      return Success<VerificationResult>(result);
     } on AppException catch (exception) {
-      return Error<String>(exception.message);
+      return Error<VerificationResult>(exception.message);
     } catch (_) {
-      return const Error<String>('errorSendVerificationFailed');
+      return const Error<VerificationResult>('errorSendVerificationFailed');
     }
   }
 

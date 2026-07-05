@@ -29,6 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
   String _gender = 'MALE';
   bool _obscurePassword = true;
   int _signupStep = 1; // 1 = Mobile, 2 = OTP Verification, 3 = Details Form
+  String? _uniqueId;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -46,10 +48,17 @@ class _SignupScreenState extends State<SignupScreen> {
       _showMessage(context.l10n.errorInvalidMobile);
       return;
     }
+
     setState(() {
-      _signupStep = 2;
+      _isLoading = true;
     });
-    _showMessage('OTP code sent successfully to +91 $phone');
+
+    context.read<AuthBloc>().add(
+          SendVerificationCodeRequested(
+            identifierType: 'MOBILE',
+            identifierValue: phone,
+          ),
+        );
   }
 
   void _handleVerifyOtp() {
@@ -59,14 +68,23 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    if (otp == '000000') {
-      setState(() {
-        _signupStep = 3;
-      });
-      _showMessage('Mobile number verified successfully');
-    } else {
-      _showMessage('Invalid verification code. Please try again.');
+    if (_uniqueId == null) {
+      _showMessage('Please send the verification code first');
+      return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    context.read<AuthBloc>().add(
+          ValidateVerificationOtpRequested(
+            uniqueId: _uniqueId!,
+            otp: otp,
+            isEmail: false,
+            identifierValue: _mobileNumberController.text.trim(),
+          ),
+        );
   }
 
   void _handleSignup() {
@@ -180,10 +198,35 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: AppColors.scaffold,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthRegistered) {
+          if (state is AuthAuthenticated) {
             Navigator.of(context).pushReplacementNamed(AppRouter.home);
-          } else if (state is AuthFailure) {
+          } else if (state is VerificationCodeSent) {
+            setState(() {
+              _isLoading = false;
+              _uniqueId = state.uniqueId;
+              _signupStep = 2;
+            });
             _showMessage(state.message);
+          } else if (state is VerificationOtpValidated) {
+            setState(() {
+              _isLoading = false;
+              _signupStep = 3;
+            });
+            _showMessage('Mobile number verified successfully.');
+          } else if (state is VerificationFailure) {
+            setState(() {
+              _isLoading = false;
+            });
+            _showMessage(state.message);
+          } else if (state is AuthFailure) {
+            setState(() {
+              _isLoading = false;
+            });
+            _showMessage(state.message);
+          } else if (state is AuthLoading) {
+            setState(() {
+              _isLoading = true;
+            });
           }
         },
         child: Stack(
@@ -297,8 +340,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             const SizedBox(height: AppSpacing.lg),
                             PrimaryButton(
-                              label: 'Send OTP',
-                              onPressed: _handleSendOtp,
+                              label: _isLoading ? 'Sending…' : 'Send OTP',
+                              onPressed: _isLoading ? null : _handleSendOtp,
                               backgroundColor: AppColors.buttonPrimary,
                               foregroundColor: AppColors.buttonOnPrimary,
                             ),
@@ -322,19 +365,21 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             const SizedBox(height: AppSpacing.lg),
                             PrimaryButton(
-                              label: 'Verify OTP',
-                              onPressed: _handleVerifyOtp,
+                              label: _isLoading ? 'Verifying…' : 'Verify OTP',
+                              onPressed: _isLoading ? null : _handleVerifyOtp,
                               backgroundColor: AppColors.buttonPrimary,
                               foregroundColor: AppColors.buttonOnPrimary,
                             ),
                             const SizedBox(height: AppSpacing.md),
                             Center(
                               child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _signupStep = 1;
-                                  });
-                                },
+                                onPressed: _isLoading
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          _signupStep = 1;
+                                        });
+                                      },
                                 child: const Text(
                                   'Change Mobile Number',
                                   style: TextStyle(

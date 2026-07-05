@@ -176,7 +176,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     emit(
       result.when(
-        success: VerificationCodeSent.new,
+        success: (verificationResult) => VerificationCodeSent(
+          uniqueId: verificationResult.uniqueId,
+          message: verificationResult.message,
+        ),
         failure: VerificationFailure.new,
       ),
     );

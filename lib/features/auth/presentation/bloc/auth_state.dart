@@ -65,12 +65,16 @@ class AuthFailure extends AuthState {
 }
 
 class VerificationCodeSent extends AuthState {
-  const VerificationCodeSent(this.uniqueId);
+  const VerificationCodeSent({
+    required this.uniqueId,
+    required this.message,
+  });
 
   final String uniqueId;
+  final String message;
 
   @override
-  List<Object?> get props => <Object?>[uniqueId];
+  List<Object?> get props => <Object?>[uniqueId, message];
 }
 
 class VerificationOtpValidated extends AuthState {

@@ -1,4 +1,5 @@
 import 'package:flutter_app/core/result/result.dart';
+import 'package:flutter_app/features/auth/domain/entities/verification_result.dart';
 import 'package:flutter_app/features/auth/domain/repositories/auth_repository.dart';
 
 class SendIdentifierVerification {
@@ -6,7 +7,7 @@ class SendIdentifierVerification {
 
   final AuthRepository _repository;
 
-  Future<Result<String>> call({
+  Future<Result<VerificationResult>> call({
     required String identifierType,
     required String identifierValue,
   }) {
