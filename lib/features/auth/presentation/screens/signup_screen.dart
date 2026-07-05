@@ -90,7 +90,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     final preferredLanguage = Localizations.localeOf(context).languageCode;
     final username = 'user_$phone';
-    final email = '$phone@temp.com';
+    final email = '';
 
     context.read<AuthBloc>().add(
           SignupRequested(
